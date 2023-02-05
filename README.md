@@ -10,7 +10,7 @@ This project aims to implement secure, high-speed peer-to-peer data transfer bet
 
 ## Tasks
 | Task | Date Started | Date Completed | Notes | PRs | Issue |
-| :--------: | :-------: | :-------: :-------: :-------: :-------: |
+| -------- | ------- | ----------|-----|-----|-------- |
 | Repo Creation | 05-02-2022 | 05-02-2022 | | | |
 
 ## Requirements
