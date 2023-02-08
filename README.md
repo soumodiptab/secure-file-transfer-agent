@@ -49,6 +49,11 @@ The UI section of the project will be based on javascript, in particular , react
 ### Hardware Requirements
 Two systems will be required. One will be acting as client uploading the file. Another for acting as client uploading the file. Systems should have capable enough processor as applications can handle information at a faster speed. (preferably with 4 core or more). A high speed internet connection be needed.
 
+## Scope
+- iUsing NodeJS servers, two agents (Data Foundation and Partner) can exchange data at rapid speeds between each other while being secure.
+- Data Transfer Session Monitor ( Web based monitoring)
+- Data Foundation Integration: File System Integration + MinIO Integration
+
 ## System Design 
 
 
@@ -73,3 +78,5 @@ The traditional mode of file transmission involves multiple steps and can be tim
 - Step 4. Once the transfer is complete, the recipient can open the local directory and view the received file.
 
 This streamlined process enables quick and efficient file transfer without the need for intermediate servers or links, saving time and reducing complexity.
+
+![](README_ASSETS/Images/workflow1.png)
