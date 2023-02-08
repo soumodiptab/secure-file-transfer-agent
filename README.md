@@ -56,16 +56,8 @@ Two systems will be required. One will be acting as client uploading the file. A
 
 ## System Design 
 
-
-
-## Pipeline and Workflow
-
-**ER Diagram and Design**
-
-
 ![](README_ASSETS/Images/workflow.png)
 
-**Pipeline Design**
 
 ### **Workflow of the System**
 
