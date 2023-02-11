@@ -56,7 +56,7 @@ Two systems will be required. One will be acting as client uploading the file. A
 
 ## System Design 
 
-![](README_ASSETS/Images/workflow.png)
+![](README_ASSETS/Images/workflow1.png)
 
 
 ### **Workflow of the System**
@@ -71,4 +71,4 @@ The traditional mode of file transmission involves multiple steps and can be tim
 
 This streamlined process enables quick and efficient file transfer without the need for intermediate servers or links, saving time and reducing complexity.
 
-![](README_ASSETS/Images/workflow1.png)
+![](README_ASSETS/Images/workflow2.png)
