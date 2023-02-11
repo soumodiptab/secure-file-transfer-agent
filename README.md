@@ -67,8 +67,9 @@ The traditional mode of file transmission involves multiple steps and can be tim
 - Step1. The recipient logs into the website and navigates to the "Point-to-Point" transfer page. They enable the option "Allow to receive direct transfer files from partners," which displays their unique ID and Key. The recipient then provides this information to the sender.
 - Step 2. The recipient runs the client and selects the "Direct Transfer" option, and sets the desired save path for received files.
 - Step 3. The sender logs into the client and clicks "Start to Transfer File" in the "Point-to-Point" page. They enter the recipient's ID and Key to initiate the transfer. The recipient's client will automatically start receiving the file.
-- Step 4. Once the transfer is complete, the recipient can open the local directory and view the received file.
+- Step 4. The transfer process is monitored by the server, which provides upload and download progress information to both the sender and recipient.
+- Step 5. Once the transfer is complete, the recipient can open the local directory and view the received file.
 
-This streamlined process enables quick and efficient file transfer without the need for intermediate servers or links, saving time and reducing complexity.
+By adding a server to monitor all file transfers, the process becomes more efficient and transparent. Both the sender and recipient can view the progress of the transfer in real-time, and all transfer history is stored in one centralized location for easy access.
 
 ![](README_ASSETS/Images/workflow2.png)
