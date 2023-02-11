@@ -64,12 +64,20 @@ Two systems will be required. One will be acting as client uploading the file. A
 The traditional mode of file transmission involves multiple steps and can be time-consuming. To address this issue, our team has developed a point-to-point transfer mode that enables end-to-end file transmission between users in a single step. Here's how it works:
 
 ---
-- Step1. The recipient logs into the website and navigates to the "Point-to-Point" transfer page. They enable the option "Allow to receive direct transfer files from partners," which displays their unique ID and Key. The recipient then provides this information to the sender.
-- Step 2. The recipient runs the client and selects the "Direct Transfer" option, and sets the desired save path for received files.
-- Step 3. The sender logs into the client and clicks "Start to Transfer File" in the "Point-to-Point" page. They enter the recipient's ID and Key to initiate the transfer. The recipient's client will automatically start receiving the file.
-- Step 4. The transfer process is monitored by the server, which provides upload and download progress information to both the sender and recipient.
-- Step 5. Once the transfer is complete, the recipient can open the local directory and view the received file.
+- Step 1. Agent A logs into the website and navigates to the "Point-to-Point" transfer page. They enter the recipient's information and initiate a request to the new server to find the recipient's ID.
 
-By adding a server to monitor all file transfers, the process becomes more efficient and transparent. Both the sender and recipient can view the progress of the transfer in real-time, and all transfer history is stored in one centralized location for easy access.
+- Step 2. The server searches for the recipient's information and provides Agent A with the recipient's ID and Key. Agent A then prepares the transfer request along with the decryption key from the sender and sends it to the recipient.
+
+- Step 3. Agent B receives the transfer request and verifies it. Upon successful verification, Agent B sends a confirmation to the server.
+
+- Step 4. The server receives the confirmation from Agent B and informs Agent A, who can now initiate the transfer.
+
+- Step 5. Agent A clicks "Start to Transfer File" in the "Point-to-Point" page and enters the recipient's ID and Key. The recipient's client will automatically start receiving the file.
+
+- Step 6. The server monitors the upload and download progress of the transfer and provides real-time updates to both Agent A and Agent B.
+
+- Step 7. Once the transfer is complete, the recipient can open the local directory and view the received file. The server also updates the transfer history, which can be accessed by both parties to view the status of previous transfers.
+
+By adding a server that monitors the transfer process, both parties can view the progress of the transfer in real-time and have access to all transfer history in one centralized location. This added level of transparency and accountability helps to ensure that all transfers are completed successfully and provides a convenient way to track transfer history.
 
 ![](README_ASSETS/Images/workflow2.png)
