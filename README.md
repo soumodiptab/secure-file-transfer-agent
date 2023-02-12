@@ -47,10 +47,10 @@ The UI section of the project will be based on javascript, in particular , react
 --- 
 
 ### Hardware Requirements
-Two systems will be required. One will be acting as client uploading the file. Another for acting as client uploading the file. Systems should have capable enough processor as applications can handle information at a faster speed. (preferably with 4 core or more). A high speed internet connection be needed.
+We will require three systems. One will be acting as client uploading the file.The other will be acting as a monitoring system at the DFS Server for tracking and monitoring data transfer. Another for acting as client downloading the file. Systems should have capable enough processor as applications can handle information at a faster speed. (preferably with 4 core or more). A high speed internet connection will be needed.
 
 ## Scope
-- iUsing NodeJS servers, two agents (Data Foundation and Partner) can exchange data at rapid speeds between each other while being secure.
+- Using NodeJS servers, two agents (Data Foundation and Partner) can exchange data at rapid speeds between each other while being secure.
 - Data Transfer Session Monitor ( Web based monitoring)
 - Data Foundation Integration: File System Integration + MinIO Integration
 
@@ -63,18 +63,23 @@ Two systems will be required. One will be acting as client uploading the file. A
 
 The traditional mode of file transmission involves multiple steps and can be time-consuming. To address this issue, our team has developed a point-to-point transfer mode that enables end-to-end file transmission between users in a single step. Here's how it works:
 
----
-- Step 1. Agent A logs into the website and navigates to the "Point-to-Point" transfer page. They enter the recipient's information and initiate a request to the new server to find the recipient's ID.
+#### Preqrequisites for setup:
+1. Create Participant ID for each client node.
+2. Generate Public and Private Keys for each user and store on the database of DFS Server.
+3. Each client has to set their profile details's that is participant ID and download directory. ( They should have enough space for downloading the entire file)
 
-- Step 2. The server searches for the recipient's information and provides Agent A with the recipient's ID and Key. Agent A then prepares the transfer request along with the decryption key from the sender and sends it to the recipient.
+---
+- Step 1. Agent A logs into the website(fetches its own Public and Private key) and navigates to the "Point-to-Point" transfer page and clicks "Start to Transfer File" and enters the recipient's ID. This initiates a Handshake with Agent B through the DFS Server and creates a request to the DFS server to find the recipient's ID.
+
+- Step 2. The server searches for the recipient's information (Public and Private Key) and provides Agent A with the recipient's ID and Key. Agent A then prepares the transfer request along with the decryption key(A's public key) from the database and sends it to the recipient.
 
 - Step 3. Agent B receives the transfer request and verifies it. Upon successful verification, Agent B sends a confirmation to the server.
 
 - Step 4. The server receives the confirmation from Agent B and informs Agent A, who can now initiate the transfer.
 
-- Step 5. Agent A clicks "Start to Transfer File" in the "Point-to-Point" page and enters the recipient's ID and Key. The recipient's client will automatically start receiving the file.
+- Step 5.  Agent A breaks down the file into chunks and creates parallel threads to send each chunk encrypted with A's private key. The receiver that is Agent B recieves each chunk on parallel threads and decrypts using A's public key. We will use MD5 to verify integrity of each file chunk, if corrupted send a Negative Acknowledgement to resend the chunk.
 
-- Step 6. The server monitors the upload and download progress of the transfer and provides real-time updates to both Agent A and Agent B.
+- Step 6. The server monitors the upload and download progress of the transfer and provides real-time updates from Agent A and Agent B.
 
 - Step 7. Once the transfer is complete, the recipient can open the local directory and view the received file. The server also updates the transfer history, which can be accessed by both parties to view the status of previous transfers.
 
