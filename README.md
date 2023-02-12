@@ -56,7 +56,9 @@ We will require three systems. One will be acting as client uploading the file.T
 
 ## System Design 
 <center>
+    
 ![](README_ASSETS/Images/workflow1.png)
+
 </center>
 
 ### **Workflow of the System**
@@ -85,5 +87,7 @@ The traditional mode of file transmission involves multiple steps and can be tim
 
 By adding a server that monitors the transfer process, both parties can view the progress of the transfer in real-time and have access to all transfer history in one centralized location. This added level of transparency and accountability helps to ensure that all transfers are completed successfully and provides a convenient way to track transfer history.
 <center>
+    
 ![](README_ASSETS/Images/workflow2.png)
+
 </center>
