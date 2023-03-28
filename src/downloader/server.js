@@ -40,4 +40,18 @@ app.post('/login', (req, res) => {
   }
 });
 
+app.get('/dashboard', (req, res) => {
+  res.render('dashboard',{title: 'Downloader Dashboard'});
+})
+app.get('/configure',(req,res)=>{
+  config = {
+    peerid:1234,
+    downloadpath:"/home/Downloads",
+  }
+  res.render('configure',{title: 'Downloader Configure'});
+})
+app.post('/configure',(req,res)=>{
+  res.render('configure',{title: 'Downloader Configure'});
+})
+
 app.listen(port);

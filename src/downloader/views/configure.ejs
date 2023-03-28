@@ -1,0 +1,12 @@
+<div class="container my-5">
+    <h1 class="mb-4">Configuration</h1>
+    <form action="/configure" method="post">
+      <div class="mb-3">
+        <label for="peerid">Peer ID</label>
+        <input type="text" class="form-control" id="peerid" name="peerid" disabled>
+        <label for="folderLocation" class="form-label">Download Location</label>
+        <input type="file" class="form-control" id="downloadpath" name="downloadpath" webkitdirectory directory/>
+      </div>
+      <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+  </div>
