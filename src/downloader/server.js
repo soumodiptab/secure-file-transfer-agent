@@ -26,7 +26,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/login', (req, res) => {
-  res.render('login',{title: 'Downloader Login'});
+  res.render('login',{title: 'Downloader Login',active : 'login'});
 })
 app.post('/login', (req, res) => {
   const username = req.body.username;
@@ -41,17 +41,26 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/dashboard', (req, res) => {
-  res.render('dashboard',{title: 'Downloader Dashboard'});
+  res.render('dashboard',{title: 'Downloader Dashboard',active : 'dashboard'});
 })
 app.get('/configure',(req,res)=>{
   config = {
     peerid:1234,
     downloadpath:"/home/Downloads",
   }
-  res.render('configure',{title: 'Downloader Configure'});
-})
-app.post('/configure',(req,res)=>{
-  res.render('configure',{title: 'Downloader Configure'});
-})
+  res.render('configure',{title: 'Downloader Configure',active :'configure',config:config});
+});
+// app.post('/configure',(req,res)=>{
+//   console.log('peerid:'+req.body.peerid);
+//   console.log('downloadpath:'+req.body.downloadpath);
+//   res.send('confguratiion saved')
+// });
+app.get('/upload',(req,res)=>{
+  res.render('upload',{title: 'Downloader Upload',active :'upload'})
+});
+app.post('/upload',(req,res)=>{
+  res.send('File Uploaded')
+});
+
 
 app.listen(port);
