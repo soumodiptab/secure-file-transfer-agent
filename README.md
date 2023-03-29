@@ -32,7 +32,7 @@ UDP Peer to Peer Secure Data Transfer
     - Partner Agent(s) Details: Partner ID, Partner Public Key, Partner Private Key, Data Send / Receive directory, Host name, IP Address, port details
 - Data Transfer Request Setup ( Sender and Receiver DT Profiles, Transfer Configuration: (#threads, IP addresses, ports, schedule time, # of files, Total Files Size, md key)
 - Add Files
-- Schedule/initiate Data Transfer Request
+- Schedule/Initiate Data Transfer Request
 - DT Profile key verification. On success, Initiate Data transfer (send / receive)
 - Data Transfer Session Monitor ( Web based monitoring)
 - Data Foundation Integration: File System Integration + MinIO Integration
