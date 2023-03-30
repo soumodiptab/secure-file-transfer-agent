@@ -10,12 +10,17 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@fortawesome/fontawesome-free": "^6.4.0",
         "@volar/pug-language-service": "^1.0.24",
+        "bcrypt": "^5.1.0",
         "body-parser": "^1.20.2",
         "ejs": "^3.1.9",
         "ejs-blocks": "^0.1.4",
         "express": "^4.18.2",
         "express-ejs-layouts": "^2.5.1",
+        "express-session": "^1.17.3",
+        "passport": "^0.6.0",
+        "passport-local": "^1.0.0",
         "pug": "^3.0.2"
     },
     "devDependencies": {
