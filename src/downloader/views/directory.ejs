@@ -1,5 +1,5 @@
 <div class="container mb-3">
-  <input type="text" class="form-control" id="path" name="path" value="<%= dirpath %>" readonly>
+  <input type="text" class="form-control" id="finalpath" name="finalpath" readonly>
   <br>
   <button id="directoryShow" type="button" class="btn btn-primary">Open File</button>
 </div>
@@ -14,10 +14,14 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <div class="form-group">
-          <label for="dirpath"><i class="fa-folder"> Current Directory</i></label>
-          <input type="text" class="form-control" id="dirpath" name="dirpath" value="<%= dirpath %>" readonly>
-          <br>
+        <label for="dirpath"><i class="fa-folder"> Current Directory</i></label>
+        <div class="row">
+          <div class="col-md-10">
+            <input type="text" class="form-control" id="dirpath" name="dirpath" value="<%= dirpath %>" readonly>
+          </div>
+          <div class="col-md-2">
+            <button class="btn btn-primary btn-block" type="button" id="directoryBack">Back</button>
+          </div>
         </div>
         <div class="table-responsive table-scrollable">
           <table class="table table-striped">
@@ -46,5 +50,5 @@
   </div>
 </div>
 <script>
-  
+
 </script>

@@ -104,24 +104,18 @@ app.post('/upload',(req,res)=>{
   res.send('File Uploaded')
 });
 
-app.get('/dir',(req,res)=>{
-  const directory = req.query.path || '/home';
-  const absoluteDirectory = path.join(directory);
-  fs.readdir(absoluteDirectory, { withFileTypes: true }, (err, files) => {
-    if (err) {
-      return res.status(500).send('Error reading directory');
-    }
-    const filesObjects = files.map((file) => {
-      const filePath = path.join(absoluteDirectory,file.name);
-      const absolutePath = path.resolve(filePath);
-      const stats = fs.statSync(absolutePath);
-      const fileType = (file.isDirectory())? 'directory':path.extname(filePath);
-      return { name: file.name,isdir:file.isDirectory(), path: absolutePath ,size:stats.size,type:fileType};
-  });
-  res.render('directory', { title:'Directory explorer',files:filesObjects,active :'directory' , dirpath:absoluteDirectory});
-  });
-});
+function convertBytesToNearest(sizeInBytes) {
+  const units = ['B', 'KB', 'MB', 'GB', 'TB'];
+  let index = 0;
+  let size = sizeInBytes;
+  
+  while (size >= 1024 && index < units.length - 1) {
+    size /= 1024;
+    index++;
+  }
 
+  return `${Math.round(size * 100) / 100} ${units[index]}`;
+}
 
 app.get('/test',(req,res)=>{
   const directory = req.query.path || '/home';
@@ -135,7 +129,26 @@ app.get('/test',(req,res)=>{
       const absolutePath = path.resolve(filePath);
       const stats = fs.statSync(absolutePath);
       const fileType = (file.isDirectory())? 'directory':path.extname(filePath);
-      return { name: file.name,isdir:file.isDirectory(), path: absolutePath ,size:stats.size,type:fileType};
+      return { name: file.name,isdir:file.isDirectory(), path: absolutePath ,size:convertBytesToNearest(stats.size),type:fileType};
+  });
+  res.render('directory', { title:'Directory explorer',files:filesObjects,active :'directory' , dirpath:absoluteDirectory});
+  });
+});
+
+
+app.get('/dir',(req,res)=>{
+  const directory = req.query.path || '/home';
+  const absoluteDirectory = path.join(directory);
+  fs.readdir(absoluteDirectory, { withFileTypes: true }, (err, files) => {
+    if (err) {
+      return res.status(500).send('Error reading directory');
+    }
+    const filesObjects = files.map((file) => {
+      const filePath = path.join(absoluteDirectory,file.name);
+      const absolutePath = path.resolve(filePath);
+      const stats = fs.statSync(absolutePath);
+      const fileType = (file.isDirectory())? 'directory':path.extname(filePath);
+      return { name: file.name,isdir:file.isDirectory(), path: absolutePath ,size:convertBytesToNearest(stats.size),type:fileType};
   });
   res.send({ dirpath:absoluteDirectory,files:filesObjects,active :'directory'});
   });
