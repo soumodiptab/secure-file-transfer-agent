@@ -61,7 +61,7 @@ passport.deserializeUser((id, done) => {
   done(null, user);
 });
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ['/login','/logout','/test','/dir'];
+  const unprotectedPaths = ['/login','/logout'];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -98,7 +98,9 @@ app.get('/configure',(req,res)=>{
 //   res.send('confguratiion saved')
 // });
 app.get('/upload',(req,res)=>{
-  res.render('upload',{title: 'Downloader Upload',active :'upload'})
+  const directory = req.query.path || '/home';
+  const absoluteDirectory = path.join(directory);
+  res.render('upload',{title: 'Downloader Upload',active :'upload',dirpath:absoluteDirectory})
 });
 app.post('/upload',(req,res)=>{
   res.send('File Uploaded')
@@ -117,23 +119,23 @@ function convertBytesToNearest(sizeInBytes) {
   return `${Math.round(size * 100) / 100} ${units[index]}`;
 }
 
-app.get('/test',(req,res)=>{
-  const directory = req.query.path || '/home';
-  const absoluteDirectory = path.join(directory);
-  fs.readdir(absoluteDirectory, { withFileTypes: true }, (err, files) => {
-    if (err) {
-      return res.status(500).send('Error reading directory');
-    }
-    const filesObjects = files.map((file) => {
-      const filePath = path.join(absoluteDirectory,file.name);
-      const absolutePath = path.resolve(filePath);
-      const stats = fs.statSync(absolutePath);
-      const fileType = (file.isDirectory())? 'directory':path.extname(filePath);
-      return { name: file.name,isdir:file.isDirectory(), path: absolutePath ,size:convertBytesToNearest(stats.size),type:fileType};
-  });
-  res.render('directory', { title:'Directory explorer',files:filesObjects,active :'directory' , dirpath:absoluteDirectory});
-  });
-});
+// app.get('/test',(req,res)=>{
+//   const directory = req.query.path || '/home';
+//   const absoluteDirectory = path.join(directory);
+//   fs.readdir(absoluteDirectory, { withFileTypes: true }, (err, files) => {
+//     if (err) {
+//       return res.status(500).send('Error reading directory');
+//     }
+//     const filesObjects = files.map((file) => {
+//       const filePath = path.join(absoluteDirectory,file.name);
+//       const absolutePath = path.resolve(filePath);
+//       const stats = fs.statSync(absolutePath);
+//       const fileType = (file.isDirectory())? 'directory':path.extname(filePath);
+//       return { name: file.name,isdir:file.isDirectory(), path: absolutePath ,size:convertBytesToNearest(stats.size),type:fileType};
+//   });
+//   res.render('directory', { title:'Directory explorer',active :'upload', dirpath:absoluteDirectory});
+//   });
+// });
 
 
 app.get('/dir',(req,res)=>{
@@ -154,12 +156,12 @@ app.get('/dir',(req,res)=>{
   });
 
 });
-app.get('/file',(req,res)=>{
-  const filePath = req.query.path;
-  if (!filePath) {
-    return res.status(400).send('No file specified');
-  }
-  res.sendFile(filePath);
-});
+// app.get('/file',(req,res)=>{
+//   const filePath = req.query.path;
+//   if (!filePath) {
+//     return res.status(400).send('No file specified');
+//   }
+//   res.sendFile(filePath);
+// });
 
 app.listen(port);

@@ -125,3 +125,8 @@ function directoryUpdate() {
 }
 $('#directoryBack').on("click", directoryBack);
 $('#directoryShow').on("click", directoryUpdate);
+$('#confirmFile').on("click", function () {
+    var filepath = $('#filepath').val();
+    $('#finalpath').val(filepath);
+    $('#fileSelectionModal').modal('hide');
+});
