@@ -238,3 +238,4 @@
 {"level":"info","message":" message: 'Message not delivered to Institute200","timestamp":"2023-04-01T09:15:49.655Z"}
 {"level":"info","message":"Institute 1 Requested to send file 1 to Institute 200 with size 1 with UUID 1","timestamp":"2023-04-01T09:15:50.352Z"}
 {"level":"info","message":" message: 'Message not delivered to Institute200","timestamp":"2023-04-01T09:15:50.356Z"}
+{"level":"info","message":"192.168.0.1 Requested College List","timestamp":"2023-04-01T09:16:47.417Z"}
