@@ -107,7 +107,7 @@ app.post('/sender_request', async (req, res) => {
         // Make a request to the receiver's API with the necessary data
         // const response = await axios.post(`http://${receiverIp}/dfs_request`, {
         try {
-            const response = await axios.post(`http://localhost:4000/dfs_request`, {
+            const response = await axios.post(`http://localhost:3001/dfs_request`, {
             uuid,
             filename,
             size,
@@ -118,17 +118,17 @@ app.post('/sender_request', async (req, res) => {
           const { status } = response.data;
           // Return a response to the sender API based on the DFS response status
           if (status == 1) {
-            res.status(200).json({  message: 'Message delivered '+receiver_id , receiver_ip: receiverIp});
+            res.status(200).json({  message: 'delivered'});
             // Log response
-            logger.info('Message not delivered to Institute'+receiver_id);
+            logger.info('Message delivered to Institute '+receiver_id);
             return;
 
           } 
         } catch (error) {
-            res.status(400).json({ message: 'Message not delivered'});
+            res.status(400).json({ message: 'not-delivered'});
 
             // Log response
-            logger.info(" message: 'Message not delivered to Institute"+receiver_id);
+            logger.info("Message not delivered to Institute "+receiver_id);
             
             return;
         }

@@ -4,7 +4,8 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "devStart": "nodemon server.js"
+        "senderStart": "nodemon server.js 3000",
+        "receiverStart": "nodemon server.js 3001"
     },
     "keywords": [],
     "author": "",
@@ -25,7 +26,8 @@
         "ip": "^1.1.8",
         "passport": "^0.6.0",
         "passport-local": "^1.0.0",
-        "pug": "^3.0.2"
+        "pug": "^3.0.2",
+        "uuid": "^9.0.0"
     },
     "devDependencies": {
         "bootstrap": "^5.2.3",

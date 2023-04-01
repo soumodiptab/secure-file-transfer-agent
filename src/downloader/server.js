@@ -11,7 +11,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const path = require("path");
 const app = express();
-const port = 3000;
+const port = process.argv[2];
 // const dfs_server_ip = 'localhost'
 // const dfs_server_port = 3001
 const filesendRouter = require('./routes/fileSender');
@@ -75,7 +75,7 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ['/login','/logout','/getusers'];
+  const unprotectedPaths = ['/login','/logout','/dfs_request'];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -270,5 +270,13 @@ app.get('/downloads', (req, res) => {
   res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
 
 })
+
+
+app.post('/dfs_request', (req, res) => {
+  const { uuid, filename, size, sender_id, secret_key } = req.body;
+  console.log('recieved file request from sender :');
+  console.log(req.body);
+  res.status(200).json({ status: 1, data: 'Message delivered' });  
+});
 
 app.listen(port);

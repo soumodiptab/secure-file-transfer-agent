@@ -1,30 +1,31 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <a class="navbar-brand" href="#">Downloader</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarNavDropdown">
-        <ul class="navbar-nav">
-          <li class="nav-item">
-            <a class="nav-link <%if(active=="dashboard"){%>active<%}%>" href="/">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link <%if(active=="configure"){%>active<%}%>" href="/configure">Configure</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link <%if(active=="upload"){%>active<%}%>" href="/upload">Send File</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link <%if(active=="requests"){%>active<%}%>" href="#">Requests</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link <%if(active=="transfers"){%>active<%}%>" href="#">Ongoing Transfers</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link <%if(active=="downloads"){%>active<%}%>" href="#">Completed Downloads</a>
-          </li>
-          <!-- <li class="nav-item dropdown">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Downloader</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNavDropdown">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link <%if(active==" dashboard"){%>active<%}%>" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%if(active==" configure"){%>active<%}%>" href="/configure">Configure</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%if(active==" upload"){%>active<%}%>" href="/upload">Send File</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%if(active==" requests"){%>active<%}%>" href="/requests">Requests</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%if(active==" transfers"){%>active<%}%>" href="/transfers">Ongoing Transfers</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link <%if(active==" downloads"){%>active<%}%>" href="/downloads">Completed Downloads</a>
+        </li>
+        <!-- <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               Dropdown link
             </a>
@@ -34,7 +35,7 @@
               <li><a class="dropdown-item" href="#">Something else here</a></li>
             </ul>
           </li> -->
-        </ul>
-      </div>
+      </ul>
     </div>
-  </nav>
+  </div>
+</nav>
