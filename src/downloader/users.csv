@@ -1,0 +1,4 @@
+username,password,college_name,public_key,ip_address
+100,@100,ABC,100A,192.168.0.1
+200,@200,DEF,200B,192.168.0.2
+300,@300,GHI,300C,192.168.0.3
