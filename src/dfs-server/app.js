@@ -45,7 +45,9 @@ app.get('/history', (req, res) => {
     const parsedData = lines.slice(-20).map(line => {
       const obj = JSON.parse(line);
       const message = obj.message;
-      const timestamp = obj['timestamp'];
+      var timestamp = Date.parse(obj['timestamp']);
+      timestamp = new Date(timestamp);
+      timestamp = timestamp.toLocaleString();
       return { timestamp, message };
     });
   
@@ -149,6 +151,6 @@ app.post('/sender_request', async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
+app.listen(4000, () => {
     logger.info('Server started on port 3000');
 });
