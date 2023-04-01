@@ -1,0 +1,12 @@
+.table-scrollable {
+    max-height:350px;
+    overflow-y:auto;
+  }
+a.disabled {
+  pointer-events: none;
+  cursor: default;
+}
+p.readdir:hover {
+  color: #1423c7;
+  text-decoration: underline;
+}

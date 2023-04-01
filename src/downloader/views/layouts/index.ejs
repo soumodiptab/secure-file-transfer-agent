@@ -1,21 +1,27 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title><%- title %></title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-  </head>
-  <body>
-    <div class="container">
-      <%- include('./header.ejs') %>
+
+<head>
+  <title><%- title %></title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/css/directory.css">
+  <link rel="stylesheet" href="/css/fontawesome.css">
+</head>
+
+<body>
+  <div class="container">
+    <%- include('./header.ejs') %>
       <div class="row">
         <div class="col-md-6 mx-auto mt-5">
           <%- body %>
         </div>
       </div>
       <%- include('./footer.ejs') %>
-    </div>
-    <script src="/js/jquery.min.js"></script>
-    <script src="/js/popper.min.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
-  </body>
+  </div>
+  <script src="/js/jquery.min.js"></script>
+  <script src="/js/popper.min.js"></script>
+  <script src="/js/bootstrap.min.js"></script>
+  <script src="/js/directory.js"></script>
+</body>
+
 </html>
