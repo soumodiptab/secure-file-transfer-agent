@@ -141,7 +141,7 @@ app.get('/upload',(req,res)=>{
 app.post('/upload',(req,res)=>{
   const senderpeerid = req.user.username;
   const filename = path.basename(req.body.finalpath);
-  const stats = fs.statSync(absolutePath);
+  const stats = fs.statSync(req.body.finalpath);
   const size = stats.size;
   const uuid = uuidv4();
   // console.log(req.body.finalpath) ;
