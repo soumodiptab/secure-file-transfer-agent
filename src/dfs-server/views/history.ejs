@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Data Foundation Server - History</title>
+    <meta http-equiv="refresh" content="5">
+    <link rel="stylesheet" href="/public/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Data Foundation Server - History</h1>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="/current">Current Activity</a></li>
+        <li><a href="/history">History</a></li>
+      </ul>
+    </nav>
+    <table>
+      <thead>
+        <tr>
+          <th>Timestamp</th>
+          <th>Message</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% data.forEach(item => { %>
+          <tr>
+            <td><%= item.timestamp %></td>
+            <td><%= item.message %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+</html>
