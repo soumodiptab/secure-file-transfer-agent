@@ -89,7 +89,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/sender_request', async (req, res) => {
-  const { uuid, Filename, Size, Sender_id, Receiver_id } = req.body;
+  const { uuid, filename, size, sender_id, secret_key, receiver_id } = req.body;
 
   try {
     // Read the IP address of the receiver from the CSV file
@@ -97,34 +97,35 @@ app.post('/sender_request', async (req, res) => {
       .pipe(csv());
 
     for await (const row of stream) {
-      if (row.username === Receiver_id) {
+      if (row.username === receiver_id) {
         const receiverIp = row.ip_address;
 
-        logger.info("Institute "+Sender_id + " Requested to send file " + Filename + " to Institute " + Receiver_id + " with size " + Size + " with UUID " + uuid);
+        logger.info("Institute "+sender_id + " Requested to send file " + filename + " to Institute " + receiver_id + " with size " + size + " with UUID " + uuid);
         // Make a request to the receiver's API with the necessary data
         // const response = await axios.post(`http://${receiverIp}/dfs_request`, {
         const response = await axios.post(`http://localhost:4000/dfs_request`, {
           uuid,
-          Filename,
-          Size,
-          Sender_id,
+          filename,
+          size,
+          sender_id,
+          secret_key
         });
 
         const { status } = response.data;
 
         // Return a response to the sender API based on the DFS response status
         if (status === 1) {
-          res.status(200).json({ message: 'Request accepted' });
+          res.status(200).json({ message: 'Request accepted' , receiver_ip: receiverIp});
           // Log response
-          logger.info("Institute "+Receiver_id+" Accepted the request");
+          logger.info("Institute "+receiver_id+" Accepted the request");
 
           
           return;
         } else {
-          res.status(400).json({ message: 'Request rejected' });
+          res.status(400).json({ message: 'Request rejected'});
           // Log response
           
-          logger.info("Institute "+Receiver_id+" Rejected the request");
+          logger.info("Institute "+receiver_id+" Rejected the request");
           
           return;
         }
@@ -136,7 +137,7 @@ app.post('/sender_request', async (req, res) => {
     res.status(400).json({ error: 'Receiver ID not found' });
 
     // Log response
-    logger.info("Institute "+Receiver_id+" Not Found");
+    logger.info("Institute "+receiver_id+" Not Found");
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
