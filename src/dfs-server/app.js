@@ -97,38 +97,40 @@ app.post('/sender_request', async (req, res) => {
       .pipe(csv());
 
     for await (const row of stream) {
+
       if (row.username === receiver_id) {
         const receiverIp = row.ip_address;
 
         logger.info("Institute "+sender_id + " Requested to send file " + filename + " to Institute " + receiver_id + " with size " + size + " with UUID " + uuid);
         // Make a request to the receiver's API with the necessary data
         // const response = await axios.post(`http://${receiverIp}/dfs_request`, {
-        const response = await axios.post(`http://localhost:4000/dfs_request`, {
-          uuid,
-          filename,
-          size,
-          sender_id,
-          secret_key
-        });
+        try {
+            const response = await axios.post(`http://localhost:4000/dfs_request`, {
+            uuid,
+            filename,
+            size,
+            sender_id,
+            secret_key
+          });
 
-        const { status } = response.data;
+          const { status } = response.data;
+          // Return a response to the sender API based on the DFS response status
+          if (status == 1) {
+            res.status(200).json({  message: 'Message delivered '+receiver_id , receiver_ip: receiverIp});
+            // Log response
+            logger.info('Message not delivered to Institute'+receiver_id);
+            return;
 
-        // Return a response to the sender API based on the DFS response status
-        if (status === 1) {
-          res.status(200).json({ message: 'Request accepted' , receiver_ip: receiverIp});
-          // Log response
-          logger.info("Institute "+receiver_id+" Accepted the request");
+          } 
+        } catch (error) {
+            res.status(400).json({ message: 'Message not delivered'});
 
-          
-          return;
-        } else {
-          res.status(400).json({ message: 'Request rejected'});
-          // Log response
-          
-          logger.info("Institute "+receiver_id+" Rejected the request");
-          
-          return;
+            // Log response
+            logger.info(" message: 'Message not delivered to Institute"+receiver_id);
+            
+            return;
         }
+        
       }
     }
 
