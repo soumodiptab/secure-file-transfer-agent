@@ -227,5 +227,48 @@ app.post('/getusers', async (req, res) => {
   // Log response
   // logger.info(ip_address+" Requested College List");
 });
+// app.post('/configure',(req,res)=>{
+//   console.log('peerid:'+req.body.peerid);
+//   console.log('downloadpath:'+req.body.downloadpath);
+//   res.send('confguratiion saved')
+// });
+
+//Requests
+app.get('/requests', (req, res) => {
+
+  const requested_downloads = [
+    { name: 'File 4', status: 'Queued', Size: 12, Sender: 'AB234432GJASGJ' },
+    { name: 'File 5', status: 'Queued', Size: 56, Sender: 'XY877888GHGFHH' },
+    { name: 'File 6', status: 'Queued', Size: 98, Sender: 'YZ676888HBNZJH' },
+  ];
+
+  res.render('requests',{title: 'Downloader Requests',active : 'requests', requested_downloads});
+})
+
+//Transfers
+app.get('/transfers', (req, res) => {
+
+  const ongoing_downloads = [
+    { name: 'File 4', status: 'Downloading', Size: 12 },
+    { name: 'File 5', status: 'Downloading', Size: 56 },
+    { name: 'File 6', status: 'Downloading', Size: 98 },
+  ];
+
+  res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
+})
+
+//downloads
+app.get('/downloads', (req, res) => {
+
+  const downloads = [
+    { name: 'File 1', status: 'Downloaded', Size: 1024 },
+    { name: 'File 2', status: 'Downloaded', Size: 5012 },
+    { name: 'File 3', status: 'Downloaded', Size: 4084 },
+  ];
+
+  //res.render('downloads',{title: 'Downloader Downloads',active : 'downloads'});
+  res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
+
+})
 
 app.listen(port);

@@ -1,0 +1,35 @@
+<h2>Transfers Board</h2>
+
+<!-- <ul>
+    <% ongoing_downloads.forEach(download => { %>
+      <li>
+        <%= download.name %> - <%= download.status %>
+        <% if (download.status === 'Downloading') { %>
+            , Percentage Downloaded : <%= download.Size %> %
+        <% } %>
+      </li>
+    <% }) %>
+  </ul> -->
+
+  <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Percentage Downloaded</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% ongoing_downloads.forEach(download => { %>
+        <tr>
+          <td><%= download.name %></td>
+          <td><%= download.status %></td>
+          <% if (download.status === 'Downloading') { %>
+            <td><%= download.Size %></td>
+          <% } else { %>
+            <td>-</td>
+          <% } %>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
