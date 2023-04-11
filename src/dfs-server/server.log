@@ -59,3 +59,12 @@
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:59:03.656Z"}
 {"level":"info","message":"Institute 100 Requested to send file vm-2-key.pem to Institute 200 with size 2498 with UUID 9683e31f-0e45-48f6-8cd0-bd1bd790ab41","timestamp":"2023-04-01T11:59:21.225Z"}
 {"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-04-01T11:59:21.273Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T14:58:32.130Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:02:41.590Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:12:55.135Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:13:06.443Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:13:34.625Z"}
+{"level":"info","message":"Institute 100 Requested to send file glove.6B.50d.txt to Institute 200 with size 171350079 with UUID 03f0da97-5032-48cc-8f53-d2716791c17c","timestamp":"2023-04-01T15:14:14.919Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-04-01T15:14:14.957Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T15:24:19.627Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:24:58.112Z"}

@@ -1,3 +1,6 @@
 /node_modules/*
 /src/downloader/node_modules/*
 /src/dfs-server/node_modules/*
+/src/test/*/node_modules/*
+*.mkv
+*.txt
