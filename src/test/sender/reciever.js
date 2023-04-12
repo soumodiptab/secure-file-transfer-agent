@@ -1,52 +1,35 @@
-const dgram = require('dgram');
-const server = dgram.createSocket('udp4');
 const fs = require('fs');
-const numChunks = 184;
-const PORT = 1234;
-const outputFilePath = './downloads/xyz.pptx';
+const io = require('socket.io-client');
 
-const receivedChunks = new Map();
+const socket = io('http://localhost:3000');
 
-server.on('message', (msg, rinfo) => {
-  const chunkNum = msg.readInt32LE(0);
-  const buffer = msg.slice(4);
+socket.on('connect', () => {
+  let total_chunks=0;
+  console.log('Receiver connected');
+  socket.on('init', ({ chunks }) => {
+    console.log(`Number of chunks: ${chunks}`);
+    total_chunks=chunks;
+  });
+  socket.emit('start');
 
-  if (!receivedChunks.has(chunkNum)) {
-    receivedChunks.set(chunkNum, buffer);
+  let receivedChunks = 0;
+  const chunks = [];
 
-    const ack = Buffer.alloc(4);
-    ack.writeInt32LE(chunkNum, 0);
+  socket.on('chunk', ({ index, data }) => {
+    console.log(`Received chunk ${index}`);
+    chunks[index] = data;
+    receivedChunks++;
 
-    server.send(ack, 0, ack.length, rinfo.port, rinfo.address, (err) => {
-      if (err) throw err;
-      console.log(`Sent ack for chunk ${chunkNum}`);
-    });
-
-    if (receivedChunks.size === numChunks) {
-      const chunks = Array.from(receivedChunks.values());
-      const file = Buffer.concat(chunks);
-      fs.writeFileSync(outputFilePath, file);
-      console.log(`File saved to ${outputFilePath}`);
+    if (total_chunks === chunks.length) {
+      // All chunks received, write the file
+      const filePath = './download.mkv';
+      fs.writeFileSync(filePath, Buffer.concat(chunks));
+      console.log('File saved');
     }
-  } else {
-    const ack = Buffer.alloc(4);
-    ack.writeInt32LE(chunkNum, 0);
+  });
 
-    server.send(ack, 0, ack.length, rinfo.port, rinfo.address, (err) => {
-      if (err) throw err;
-      console.log(`Sent ack for chunk ${chunkNum}`);
-    });
-  }
+  socket.on('end', () => {
+    console.log('All chunks received');
+    socket.disconnect();
+  });
 });
-
-server.on('error', (err) => {
-  console.log(`Server error:\n${err.stack}`);
-  server.close();
-});
-
-server.on('listening', () => {
-  const address = server.address();
-  console.log(`Server listening ${address.address}:${address.port}`);
-});
-
-server.bind(PORT);

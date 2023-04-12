@@ -279,4 +279,4 @@ app.post('/dfs_request', (req, res) => {
   res.status(200).json({ status: 1, data: 'Message delivered' });  
 });
 
-app.listen(port);
+app.listen(port,'0.0.0.0');

@@ -2,9 +2,9 @@
   "name": "sender",
   "version": "1.0.0",
   "description": "testing",
-  "main": "server.js",
+  "main": "x.js",
   "scripts": {
-    "start": "nodemon server.js 4000"
+    "start": "nodemon x.js 4000"
   },
   "author": "",
   "license": "ISC",
