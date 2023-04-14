@@ -3,7 +3,7 @@ const {Server} = require('socket.io');
 const workerpool = require('workerpool');
 const pool = workerpool.pool('./sendworker.js');
 const CHUNK_SIZE = 1024 * 1024; // 1MB
-const PART_SIZE = 256 * CHUNK_SIZE;
+const PART_SIZE = 64 * CHUNK_SIZE;
 const io = new Server({});
 const io2 = new Server({});
 let filepath;
