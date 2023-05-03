@@ -1,14 +1,16 @@
 const express = require('express');
 const app = express();
-const CHUNK_SIZE = 1024 * 1024; // 1MB
-const PART_SIZE = 64 * CHUNK_SIZE;
+const CHUNK_SIZE = 64 * 1024; // 1MB
+const PART_SIZE = 1024 * CHUNK_SIZE;
 const fs = require('fs');
 const io = require('socket.io-client');
 const workerpool = require('workerpool');
 const pool = workerpool.pool('./recieveworker.js',{
-  minWorkers: 2,
-  maxWorkers: 4
+  minWorkers: 1,
+  maxWorkers: 1
 });
+worker_ports = [4001,4002,4003,4004];
+worker_ports_status = [0,0,0,0];
 
 let download_status={
   origin_path:'',
@@ -75,7 +77,8 @@ app.get('/stats', (req, res) => {
 });
 
 app.get('/progress', (req, res) => {
-  res.send(download_status.progress);
+  download_progress =download_status.progress+'%'
+  res.send(download_progress);
 });
 app.get('/stop', (req, res) => {
   pool.terminate();
@@ -83,7 +86,6 @@ app.get('/stop', (req, res) => {
 });
 
 app.get('/restart', (req, res) => {
-  pool.terminate();
   startDownload();
   res.send('Restarted download');
 });
