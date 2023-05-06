@@ -151,6 +151,41 @@ app.post('/sender_request', async (req, res) => {
   }
 });
 
+app.post('/accept', async (req, res) => {
+  try {
+    const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;
+    const receiverRequest = {
+      uuid,
+      filename,
+      size,
+      sender_id,
+      receiver_id,
+      accept,
+    };
+    if (accept) 
+    {
+      logger.info(`Institute ${receiver_id} accepted the request to download the file with UUID ${uuid}`);
+    }
+    else
+    {
+      logger.info(`Institute ${receiver_id} rejected the request to download the file with UUID ${uuid}`);
+    }
+    const receiverResponse = await axios.post('http://localhost:3000/receiver_request', receiverRequest);
+
+    if (receiverResponse.data === 1) {
+      logger.info(`Institute ${sender_id} received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+    } else {
+      logger.info(`Institute ${sender_id} didn't received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+    }
+
+    res.status(200).send(receiverResponse.data);
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).send(error.message);
+  }
+});
+
+
 app.listen(4000, () => {
     logger.info('Server started on port 3000');
 });

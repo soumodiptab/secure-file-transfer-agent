@@ -76,3 +76,23 @@
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:16:19.365Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:16:35.757Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:16:36.199Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:32:54.507Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:39:09.786Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:45:37.277Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:47:56.445Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:50:23.128Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:01:40.901Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:02:45.234Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:04:04.574Z"}
+{"level":"info","message":"Institute undefined rejected the request to download the file with UUID undefined","timestamp":"2023-05-06T17:07:42.088Z"}
+{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:08:48.571Z"}
+{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:09:21.275Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:09:43.142Z"}
+{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:09:47.131Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:12:26.312Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:13:16.378Z"}
+{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:13:42.854Z"}
+{"level":"info","message":"Institute 200 didn't received the message from 300 regarding file with UUID 1","timestamp":"2023-05-06T17:13:42.873Z"}
+{"level":"info","message":"Institute 500 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:14:26.578Z"}
+{"level":"info","message":"Institute 400 didn't received the message from 500 regarding file with UUID 1","timestamp":"2023-05-06T17:14:26.590Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:15:10.331Z"}
