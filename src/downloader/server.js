@@ -1,3 +1,4 @@
+const config = require('config');
 const csv = require('csv-parser');
 const { v4: uuidv4 } = require('uuid');
 const ip = require('ip');
@@ -10,13 +11,31 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const path = require("path");
+const workerpool = require('workerpool');
+const sequelize = require('./controllers/dbHandler');
+const pool = workerpool.pool('./workers/streamWorker',{
+  minWorkers: config.get('MIN_WORKERS'),
+  maxWorkers: config.get('MAX_WORKERS')
+});
+const {createPartition,mergeFiles} = require('./controllers/streamHandler.js');
 const app = express();
+const http = require('http');
+const {Server} = require('socket.io');
+const server = http.createServer(app);
+const io = new Server(server);
+const PARTITION_SIZE = config.get('PART_SIZE');
+const TEMP_DIR = config.get('TEMP_DIR');
+const DEFAULT_DOWNLOAD_DIR = config.get('DOWNLOAD_DIR');
+const DFS_SERVER_ADDRESS = config.get('DFS_SERVER');
+const File = require('./models/file');
 const port = process.argv[2];
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 // const dfs_server_ip = 'localhost'
 // const dfs_server_port = 3001
 const filesendRouter = require('./routes/fileSender');
 const bodyParser = require('body-parser')
+let ss = require('socket.io-stream');
+const { where , Op } = require('sequelize');
 // setup for express
 app.use(ejslayouts);
 app.set("layout", "layouts/index");
@@ -36,7 +55,9 @@ app.use("/css",express.static(path.join(__dirname, "node_modules/bootstrap/dist/
 app.use("/js", express.static(path.join(__dirname, "node_modules/bootstrap/dist/js")))
 app.use("/js",express.static(path.join(__dirname, "node_modules/@popperjs/core/dist/umd")))
 app.use("/js", express.static(path.join(__dirname, "node_modules/jquery/dist")))
-
+sequelize.sync({force:true}).then(()=>{
+  console.log('Database is ready');
+});
 var users = [
   // {
   //   id: 1,
@@ -121,11 +142,11 @@ app.post('/logout', (req, res) => {
  * Configure Details
  */
 app.get('/configure',(req,res)=>{
-  config = {
+  configuration = {
     peerid:req.user.username,
-    downloadpath:"/home/Downloads",
+    downloadpath:path.join(__dirname,DEFAULT_DOWNLOAD_DIR),
   }
-  res.render('configure',{title: 'Downloader Configure',active :'configure',config:config});
+  res.render('configure',{title: 'Downloader Configure',active :'configure',config:configuration});
 });
 /**
  * upload file information to dfs server
@@ -139,26 +160,57 @@ app.get('/upload',(req,res)=>{
 /**
  * Send file information to dfs server
  */
-app.post('/upload',(req,res)=>{
+app.post('/upload',async (req,res)=>{
   const senderpeerid = req.user.username;
-  const filename = path.basename(req.body.finalpath);
-  const stats = fs.statSync(req.body.finalpath);
+  const filePath = req.body.finalpath;
+  const fileName = path.basename(filePath);
+  const stats = fs.statSync(filePath);
   const size = stats.size;
+  const parts = Math.ceil(size / PARTITION_SIZE);
   const uuid = uuidv4();
   // console.log(req.body.finalpath) ;
   // console.log(req.body.recpeerid) ;
   // console.log(req.body.secretkey) ;
-  axios.post('http://localhost:4000/sender_request',{
+  // create temp directory if not exists
+  if (!fs.existsSync(TEMP_DIR)){
+    fs.mkdirSync(TEMP_DIR);
+  }
+  // create output directory
+  const outputDirectory = path.join(TEMP_DIR, uuid);
+  if (fs.existsSync(outputDirectory)) {
+    fs.rmSync(outputDirectory, { recursive: true });
+  }
+  fs.mkdirSync(outputDirectory);
+  for (let i = 0; i < PARTS; i++) {
+    createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
+  }
+  // create file object
+  let fileObj = {
+    id:uuid,
+    fileName:fileName,
+    filePath:filePath,
+    partPAth:outputDirectory,
+    size:size,
+    parts:parts,
+    partsSent:0,
+    progress:0,
+    type:'UPLOAD',
+    status:'PENDING',
+    senderId:senderpeerid,
+    receiverId : req.body.recpeerid,
+    secretKey : req.body.secretkey
+  };
+  // add file object to uploads array
+  await File.create(fileObj);
+  await axios.post(`http://${DFS_SERVER_ADDRESS}/sender_request`,{
     uuid:uuid,
-    filename:filename,
+    filename:fileName,
+    parts:parts,
     size:size,
     sender_id:senderpeerid,
     secret_key:req.body.secretkey,
     receiver_id:req.body.recpeerid,
   })
-  .then(response => {
-    console.log(response.data);
-  });
   res.send('File Uploaded')
 });
 /**
@@ -175,7 +227,6 @@ function convertBytesToNearest(sizeInBytes) {
     size /= 1024;
     index++;
   }
-
   return `${Math.round(size * 100) / 100} ${units[index]}`;
 }
 
@@ -240,9 +291,9 @@ app.get('/requests', (req, res) => {
   fs.createReadStream('requests.csv')
     .pipe(csv())
     .on('data', (data) => {
-      const { filename, size, sender_id, accept } = data;
+      const { uuid,filename, size, sender_id, accept } = data;
       if (accept === '0') {
-        requested_downloads.push({ name: filename, status: 'Queued', Size: size, Sender: sender_id });
+        requested_downloads.push({ id : uuid,name: filename, status: 'Queued', Size: size, Sender: sender_id });
       }
     })
     .on('end', () => {
@@ -251,20 +302,30 @@ app.get('/requests', (req, res) => {
 });
 
 //Transfers
-app.get('/transfers', (req, res) => {
-
+app.get('/transfers',async (req, res) => {
   const ongoing_downloads = [];
-  fs.createReadStream('requests.csv')
-    .pipe(csv())
-    .on('data', (data) => {
-      const { filename, size, sender_id, accept } = data;
-      if (accept === '-1') {
-        ongoing_downloads.push({ name: filename, status: 'Downloading', Size: size, Sender: sender_id });
+  let downloads = await File.findAll({
+    where : {
+      status : {
+        [Op.notIn] : ['COMPLETED','ACCEPTED','REJECTED','PENDING']
       }
-    })
-    .on('end', () => {
-      res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
-    });
+    }
+  });
+  downloads.forEach(file => {
+    ongoing_downloads.push({ name: file.fileName, status: file.status, Size: file.size, Sender: file.senderId });
+  });
+  res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
+  // fs.createReadStream('requests.csv')
+  //   .pipe(csv())
+  //   .on('data', (data) => {
+  //     const { filename, size, sender_id, accept } = data;
+  //     if (accept === '-1') {
+  //       ongoing_downloads.push({ name: filename, status: 'Downloading', Size: size, Sender: sender_id });
+  //     }
+  //   })
+  //   .on('end', () => {
+  //     res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
+  //   });
 })
 
 //downloads
@@ -282,66 +343,173 @@ app.get('/downloads', (req, res) => {
     .on('end', () => {
       res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
     });
-  
-
 })
 
 
-app.post('/dfs_request', (req, res) => {
-  const { uuid, filename, size, sender_id,receiver_id, secret_key } = req.body;
-  const accept = 0;
+app.post('/dfs_request', async (req, res) => {
+  const { uuid, filename, size,parts, sender_id,receiver_id, secret_key } = req.body;
+  // const accept = 0;
   console.log('Received file request from sender:');
   console.log(req.body);
-  const writer = csvWriter({ headers: ['uuid', 'filename', 'size', 'sender_id', 'receiver_id','secret_key', 'accept'] });
-  const data = [{ uuid, filename, size, sender_id,receiver_id, secret_key, accept }];
-  writer.pipe(fs.createWriteStream('requests.csv', { flags: 'a' }));
-  data.forEach((row) => writer.write(row));
-  writer.end();
+  // const writer = csvWriter({ headers: ['uuid', 'filename', 'size', 'sender_id', 'receiver_id','secret_key', 'accept'] });
+  // const data = [{ uuid, filename, size, sender_id,receiver_id, secret_key, accept }];
+  // writer.pipe(fs.createWriteStream('requests.csv', { flags: 'a' }));
+  // data.forEach((row) => writer.write(row));
+  // writer.end();
+  const filePath = path.join(DEFAULT_DOWNLOAD_DIR, filename);
+  let fileObj = {
+    id:uuid,
+    fileName:filename,
+    filePath:filePath,
+    size:size,
+    parts:parts,
+    partsRecieved:0,
+    progress:0,
+    type:'DOWNLOAD',
+    status:'REQUESTED',
+    senderId:sender_id,
+    receiverId : receiver_id,
+    secretKey : secret_key
+  };
+  await File.create(fileObj);
   res.status(200).json({ status: 1, data: 'Message delivered' });
 });
 
+const startDownload = async (id) => {
+  // const socket = io('http://localhost:4000');
+  const downloadFile = await File.findOne({where:{id:id}});
+  const download_loc = path.join(DEFAULT_DOWNLOAD_DIR, downloadFile.id);
+  if (fs.existsSync(download_loc)) {
+    fs.rmSync(download_loc, { recursive: true });
+  }
+  fs.mkdirSync(download_loc);
+  downloadFile.partArray = new Array(downloadFile.parts).fill(0);
+  downloadFile.status = 'DOWNLOADING';
+  downloadFile.partsRecieved = 0;
+  downloadFile.progress = 0;
+  await downloadFile.save();
+  // fun(2,downloadname,filename,total_size);
+  for (let i = 0; i < total_parts; i++) {
+    pool.exec('recieveStreamedData', [i,downloadFile.name,downloadFile.id,download_loc]).then(async() => {
+      downloadFile.partsRecieved++;
+      downloadFile.partArray[i]=1;
+      downloadFile.progress = (downloadFile.partsRecieved/downloadFile.parts)*100;
+      await downloadFile.save();
+      console.log('Part ' + i + ' recieved');
+      if(downloadFile.partsRecieved == downloadFile.parts){
+        downloadFile.status = 'MERGING';
+        console.log('Merging files');
+        mergeFiles(downloadFile.fileName, DEFAULT_DOWNLOAD_DIR,downloadFile.id,downloadFile.parts);
+        downloadFile.status = 'COMPLETED';
+        console.log('Download complete');
+      }
+    }).catch((err) => {
+      console.error(err);
+    });
+  }
+};
 
-app.post('/accept', (req, res) => {
-  const { name, Sender } = req.body;
+
+app.post('/accept',async (req, res) => {
+  const { id,name, Sender } = req.body;
   console.log('Received file accept request from sender:');
+  const downloadFile =await File.findOne({where:{id:id}});
+  downloadFile.status = 'ACCEPTED';
+  await downloadFile.save();
+  const requestBody = {
+    uuid: downloadFile.id,
+    filename: downloadFile.fileName,
+    size: downloadFile.size,
+    sender_id: downloadFile.senderId,
+    receiver_id: downloadFile.receiverId,
+    accept: 1
+  }
+  await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
+  startDownload(id);
   // Open CSV file and create a new stream for reading
-  const results = [];
-  fs.createReadStream('requests.csv')
-    .pipe(csv())
-    .on('data', (data) => results.push(data))
-    .on('end', () => {
-      // Find matching row in CSV file and update 'accept' value
-      const updatedResults = results.map((result) => {
-        if (result.filename === name  && result.sender_id === Sender) 
-        {
-          const requestBody = {
-            uuid: result.uuid,
-            filename: result.filename,
-            size: result.size,
-            sender_id: result.sender_id,
-            receiver_id: result.receiver_id,
-            accept: result.accept
-          };
-          axios.post('http://localhost:4000/accept_download', requestBody)
-          return { ...result, accept: '-1' };
-        }
-        return result;
-      });
+  // const results = [];
+  // fs.createReadStream('requests.csv')
+  //   .pipe(csv())
+  //   .on('data', (data) => results.push(data))
+  //   .on('end', () => {
+  //     // Find matching row in CSV file and update 'accept' value
+  //     const updatedResults = results.map((result) => {
+  //       if (result.filename === name  && result.sender_id === Sender) 
+  //       {
+  //         const requestBody = {
+  //           uuid: result.uuid,
+  //           filename: result.filename,
+  //           size: result.size,
+  //           sender_id: result.sender_id,
+  //           receiver_id: result.receiver_id,
+  //           accept: result.accept
+  //         };
+  //         axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody)
+  //         return { ...result, accept: '-1' };
+  //       }
+  //       return result;
+  //     });
 
-      // Write updated data back to CSV file
-      const writeStream = fs.createWriteStream('requests.csv');
-      writeStream.write('uuid,filename,size,sender_id,receiver_id,secret_key,accept\n');
-      updatedResults.forEach((result) => {
-        writeStream.write(
-          `${result.uuid},${result.filename},${result.size},${result.sender_id},${result.receiver_id},${result.secret_key},${result.accept}\n`
-        );
-      });
+  //     // Write updated data back to CSV file
+  //     const writeStream = fs.createWriteStream('requests.csv');
+  //     writeStream.write('uuid,filename,size,sender_id,receiver_id,secret_key,accept\n');
+  //     updatedResults.forEach((result) => {
+  //       writeStream.write(
+  //         `${result.uuid},${result.filename},${result.size},${result.sender_id},${result.receiver_id},${result.secret_key},${result.accept}\n`
+  //       );
+  //     });
 
       // Redirect to the same page
-      res.redirect('/requests');
-    });
+  res.redirect('/requests');
+    // });
+});
+app.post('/reject',async (req, res) => {
+  const { id,name, Sender } = req.body;
+  console.log('Received file accept request from sender:');
+  const downloadFile =await File.findOne({where:{id:id}});
+  downloadFile.status = 'REJECTED';
+  await downloadFile.save();
+  const requestBody = {
+    uuid: downloadFile.id,
+    filename: downloadFile.fileName,
+    size: downloadFile.size,
+    sender_id: downloadFile.senderId,
+    receiver_id: downloadFile.receiverId,
+    accept: 0
+  }
+  await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
+  res.redirect('/requests');
+    // });
 });
 
+/**
+ *  IO Connection for handling file transfer from sender to reciever
+ */
+io.on('connection', (socket) => {
+  console.log('Partition client connected');
+  socket.on('request_part', ({ partIndex,downloadId }) => {
+    const fileObj =uploads.find((file)=>file.id===downloadId);
+    if(!fileObj){
+      console.log('File not found');
+      socket.disconnect();
+      return;
+    }
+    console.log('Starting to send part '+partIndex);
+    const streamFilePath = path.join(TEMP_DIR, fileObj.id,`${fileObj.fileName}-p-${partIndex}.part`);
+    let stream = ss.createStream();
+    ss(socket).emit('part', stream);
+    const inputStream = fs.createReadStream(streamFilePath)
+    inputStream.pipe(stream);
+    inputStream.on('end', () => {
+      console.log('Part '+partIndex+' sent');
+      fileObj.partsSent++;
+      fileObj.progress = (fileObj.partsSent/fileObj.parts)*100;
+      if (fileObj.partsSent == fileObj.parts) {
+        fileObj.status = 'UPLOADED';
+      }
+      fileObj.save();
+    });
+  });
+});
 
-
-app.listen(port,'0.0.0.0');
+app.listen(port,'0.0.0.0', () => console.log(`Downloader app listening on port <${port}>`));

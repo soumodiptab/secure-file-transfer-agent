@@ -91,7 +91,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/sender_request', async (req, res) => {
-  const { uuid, filename, size, sender_id, secret_key, receiver_id } = req.body;
+  const { uuid, filename, size,parts, sender_id, secret_key, receiver_id } = req.body;
 
   try {
     // Read the IP address of the receiver from the CSV file
@@ -111,6 +111,7 @@ app.post('/sender_request', async (req, res) => {
             uuid,
             filename,
             size,
+            parts,
             sender_id,
             receiver_id,
             secret_key

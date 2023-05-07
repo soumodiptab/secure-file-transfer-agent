@@ -3,7 +3,6 @@ const app = express();
 const CHUNK_SIZE = 1024 * 1024; // 1MB
 const PART_SIZE = 64 * CHUNK_SIZE;
 const fs = require('fs');
-const io = require('socket.io-client');
 const workerpool = require('workerpool');
 const path = require('path');
 const pool = workerpool.pool('./recieveworker.js',{
