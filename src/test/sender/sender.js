@@ -70,36 +70,6 @@ function createPartition(filepath,filename,outputDirectory,start,end,index){
 //     });
 //   }
 
-const mergeFiles = (filename, download_path,file_id) => {
-  if(!fs.existsSync(path.join(download_path,file_id))){
-    throw new Error('Merge Folder not found');
-  }
-  const mergedFilePath = path.join(download_path, filename);
-  if (fs.existsSync(mergedFilePath)) {
-    fs.rmSync(mergedFilePath);
-  }
-  const fileOutStream = fs.createWriteStream(mergedFilePath);
-  fs.readdir(path.join(download_path,file_id), (err, files) => {
-    if (err) {
-      console.error('Error reading directory:', err);
-      return;
-    }
-    const partFiles = files.filter((file) => file.endsWith('part'));
-    partFiles.sort();
-    partFiles.forEach((partFile) => {
-      const partFilePath = path.join(download_path,file_id, partFile);
-      const inputStream = fs.createReadStream(partFilePath);
-      inputStream.pipe(fileOutStream, { end: false });
-      inputStream.on('end', () => {
-        // fs.rmSync(partFilePath);
-        console.log (`${partFilePath} merged into ${mergedFilePath}`);
-      });
-    });
-
-  });
-  
-}
-
 app.get('/', (req, res) => {
   res.send('Hello World');
 });
@@ -118,11 +88,6 @@ app.get('/partition', (req, res) => {
       createPartition(file_path,path.basename(file_path),outputDirectory,i*PART_SIZE,Math.min((i+1)*PART_SIZE,fileSize),i);
   }
   res.send({parts:PARTS,filepath:file_path});
-});
-
-app.get('/merge', (req, res) => {
-    const folder_path  = req.body.folder_path;
-
 });
   
 

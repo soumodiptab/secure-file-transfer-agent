@@ -86,14 +86,14 @@ const mergeFiles = (filename, download_path,file_id,parts) => {
 
 const startDownload = () => {
   // const socket = io('http://localhost:4000');
-  const filename = './test.mkv';
+  const filename = './test2.mkv';
   const downloadname = './download.mkv';
   const download_loc = path.join(download_dir, 'uuid-value');
   if (fs.existsSync(download_loc)) {
     fs.rmSync(download_loc, { recursive: true });
   }
   fs.mkdirSync(download_loc);
-  let total_parts=9;
+  let total_parts=32;
   download_status={
     origin_path:filename,
     file_path:downloadname,
@@ -138,20 +138,7 @@ app.get('/progress', (req, res) => {
   download_progress =download_status.progress+'%'
   res.send(download_progress);
 });
-app.get('/stop', (req, res) => {
-  pool.terminate();
-  res.send('Stopped download');
-});
 
-app.get('/restart', (req, res) => {
-  startDownload();
-  res.send('Restarted download');
-});
-
-app.get('/pause', (req, res) => {
-  pool.pause();
-  res.send('Paused download');
-});
 app.get('/start', (req, res) => {
   startDownload();
   res.send('Started download');

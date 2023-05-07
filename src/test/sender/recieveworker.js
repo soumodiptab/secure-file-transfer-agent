@@ -6,6 +6,9 @@ const PART_SIZE = 64 * CHUNK_SIZE;
 let ss = require('socket.io-stream');
 function recieveChunkedData(partIndex, filename, download_path) {
   return new Promise((resolve, reject) => {
+    try{
+
+    
     const socket = require('socket.io-client')('http://localhost:4000');
     socket.connect();
     socket.emit('request_part', { partIndex: partIndex, filepath: filename });
@@ -19,6 +22,10 @@ function recieveChunkedData(partIndex, filename, download_path) {
         resolve();
       });
     });
+  }catch(err){
+    console.log(err);
+    reject(err);
+  }
     // const part_start = partIndex * PART_SIZE;
     // const part_end = Math.min(part_start + PART_SIZE, filesize);
     // const numChunks = Math.ceil((part_end - part_start) / CHUNK_SIZE);
