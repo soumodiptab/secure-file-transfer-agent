@@ -112,6 +112,7 @@ app.post('/sender_request', async (req, res) => {
             filename,
             size,
             sender_id,
+            receiver_id,
             secret_key
           });
 
@@ -151,7 +152,7 @@ app.post('/sender_request', async (req, res) => {
   }
 });
 
-app.post('/accept', async (req, res) => {
+app.post('/accept_download', async (req, res) => {
   try {
     const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;
     const receiverRequest = {

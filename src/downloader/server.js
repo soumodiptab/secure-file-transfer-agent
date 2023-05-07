@@ -12,6 +12,7 @@ const bcrypt = require('bcrypt');
 const path = require("path");
 const app = express();
 const port = process.argv[2];
+const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 // const dfs_server_ip = 'localhost'
 // const dfs_server_port = 3001
 const filesendRouter = require('./routes/fileSender');
@@ -235,48 +236,112 @@ app.post('/getusers', async (req, res) => {
 
 //Requests
 app.get('/requests', (req, res) => {
-
-  const requested_downloads = [
-    { name: 'File 4', status: 'Queued', Size: 12, Sender: 'AB234432GJASGJ' },
-    { name: 'File 5', status: 'Queued', Size: 56, Sender: 'XY877888GHGFHH' },
-    { name: 'File 6', status: 'Queued', Size: 98, Sender: 'YZ676888HBNZJH' },
-  ];
-
-  res.render('requests',{title: 'Downloader Requests',active : 'requests', requested_downloads});
-})
+  const requested_downloads = [];
+  fs.createReadStream('requests.csv')
+    .pipe(csv())
+    .on('data', (data) => {
+      const { filename, size, sender_id, accept } = data;
+      if (accept === '0') {
+        requested_downloads.push({ name: filename, status: 'Queued', Size: size, Sender: sender_id });
+      }
+    })
+    .on('end', () => {
+      res.render('requests', { title: 'Downloader Requests', active: 'requests', requested_downloads });
+    });
+});
 
 //Transfers
 app.get('/transfers', (req, res) => {
 
-  const ongoing_downloads = [
-    { name: 'File 4', status: 'Downloading', Size: 12 },
-    { name: 'File 5', status: 'Downloading', Size: 56 },
-    { name: 'File 6', status: 'Downloading', Size: 98 },
-  ];
-
-  res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
+  const ongoing_downloads = [];
+  fs.createReadStream('requests.csv')
+    .pipe(csv())
+    .on('data', (data) => {
+      const { filename, size, sender_id, accept } = data;
+      if (accept === '-1') {
+        ongoing_downloads.push({ name: filename, status: 'Downloading', Size: size, Sender: sender_id });
+      }
+    })
+    .on('end', () => {
+      res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
+    });
 })
 
 //downloads
 app.get('/downloads', (req, res) => {
 
-  const downloads = [
-    { name: 'File 1', status: 'Downloaded', Size: 1024 },
-    { name: 'File 2', status: 'Downloaded', Size: 5012 },
-    { name: 'File 3', status: 'Downloaded', Size: 4084 },
-  ];
-
-  //res.render('downloads',{title: 'Downloader Downloads',active : 'downloads'});
-  res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
+  const downloads = [];
+  fs.createReadStream('requests.csv')
+    .pipe(csv())
+    .on('data', (data) => {
+      const { filename, size, sender_id, accept } = data;
+      if (accept === '1') {
+        downloads.push({ name: filename, status: 'Downloaded', Size: size, Sender: sender_id });
+      }
+    })
+    .on('end', () => {
+      res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
+    });
+  
 
 })
 
 
 app.post('/dfs_request', (req, res) => {
-  const { uuid, filename, size, sender_id, secret_key } = req.body;
-  console.log('recieved file request from sender :');
+  const { uuid, filename, size, sender_id,receiver_id, secret_key } = req.body;
+  const accept = 0;
+  console.log('Received file request from sender:');
   console.log(req.body);
-  res.status(200).json({ status: 1, data: 'Message delivered' });  
+  const writer = csvWriter({ headers: ['uuid', 'filename', 'size', 'sender_id', 'receiver_id','secret_key', 'accept'] });
+  const data = [{ uuid, filename, size, sender_id,receiver_id, secret_key, accept }];
+  writer.pipe(fs.createWriteStream('requests.csv', { flags: 'a' }));
+  data.forEach((row) => writer.write(row));
+  writer.end();
+  res.status(200).json({ status: 1, data: 'Message delivered' });
 });
+
+
+app.post('/accept', (req, res) => {
+  const { name, Sender } = req.body;
+  console.log('Received file accept request from sender:');
+  // Open CSV file and create a new stream for reading
+  const results = [];
+  fs.createReadStream('requests.csv')
+    .pipe(csv())
+    .on('data', (data) => results.push(data))
+    .on('end', () => {
+      // Find matching row in CSV file and update 'accept' value
+      const updatedResults = results.map((result) => {
+        if (result.filename === name  && result.sender_id === Sender) 
+        {
+          const requestBody = {
+            uuid: result.uuid,
+            filename: result.filename,
+            size: result.size,
+            sender_id: result.sender_id,
+            receiver_id: result.receiver_id,
+            accept: result.accept
+          };
+          axios.post('http://localhost:4000/accept_download', requestBody)
+          return { ...result, accept: '-1' };
+        }
+        return result;
+      });
+
+      // Write updated data back to CSV file
+      const writeStream = fs.createWriteStream('requests.csv');
+      writeStream.write('uuid,filename,size,sender_id,receiver_id,secret_key,accept\n');
+      updatedResults.forEach((result) => {
+        writeStream.write(
+          `${result.uuid},${result.filename},${result.size},${result.sender_id},${result.receiver_id},${result.secret_key},${result.accept}\n`
+        );
+      });
+
+      // Redirect to the same page
+      res.redirect('/requests');
+    });
+});
+
+
 
 app.listen(port,'0.0.0.0');

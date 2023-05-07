@@ -96,3 +96,93 @@
 {"level":"info","message":"Institute 500 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:14:26.578Z"}
 {"level":"info","message":"Institute 400 didn't received the message from 500 regarding file with UUID 1","timestamp":"2023-05-06T17:14:26.590Z"}
 {"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:15:10.331Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-07T04:48:14.629Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T04:48:19.623Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T04:48:19.718Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T04:57:46.598Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T04:59:32.644Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:04:24.715Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:06:58.127Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:08:52.808Z"}
+{"level":"info","message":"127.0.0.1 Requested College List","timestamp":"2023-05-07T05:09:00.385Z"}
+{"level":"info","message":"127.0.0.1 Requested College List","timestamp":"2023-05-07T05:09:00.385Z"}
+{"level":"info","message":"127.0.0.1 Requested College List","timestamp":"2023-05-07T05:09:00.398Z"}
+{"level":"info","message":"127.0.0.1 Requested College List","timestamp":"2023-05-07T05:09:00.399Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:09:09.798Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:09:09.806Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:09:09.807Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:09:09.807Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:09:40.031Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:32.159Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:32.160Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:32.160Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:32.161Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:43.604Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:43.605Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:43.606Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T05:10:43.609Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-07T07:28:17.385Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:28:32.434Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:28:32.555Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:33:05.579Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:35:03.812Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:07.170Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:07.171Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:07.172Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:07.172Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:17.249Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:17.251Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:17.252Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:17.252Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:46.363Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:46.365Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:46.366Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:36:46.367Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:38:17.443Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:39:37.543Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:40:09.667Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:40:09.668Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:40:09.668Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:40:09.669Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:41:59.148Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:42:31.720Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:44:41.017Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:45:13.314Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:45:52.427Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:46:50.022Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:47:02.393Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:47:02.394Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:47:02.398Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:47:02.401Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:50:07.744Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:51:30.387Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T07:59:52.821Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:00:05.889Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:12:07.405Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:13:11.975Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:13:44.390Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:19:15.827Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:22:19.690Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:24:45.809Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:25:11.174Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:26:14.319Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T08:27:16.605Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-07T11:13:40.594Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:14:31.267Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:14:31.369Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:14:44.087Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:14:44.208Z"}
+{"level":"info","message":"Institute undefined accepted the request to download the file with UUID 1","timestamp":"2023-05-07T11:14:59.027Z"}
+{"level":"info","message":"Institute 100 didn't received the message from undefined regarding file with UUID 1","timestamp":"2023-05-07T11:14:59.046Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:14:59.221Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 2","timestamp":"2023-05-07T11:27:35.382Z"}
+{"level":"info","message":"Institute 200 didn't received the message from 200 regarding file with UUID 2","timestamp":"2023-05-07T11:27:35.391Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:27:35.567Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:29:24.184Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:29:28.853Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 1","timestamp":"2023-05-07T11:30:47.344Z"}
+{"level":"info","message":"Institute 100 didn't received the message from 200 regarding file with UUID 1","timestamp":"2023-05-07T11:30:47.363Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:30:47.540Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 1","timestamp":"2023-05-07T11:59:41.853Z"}
+{"level":"info","message":"Institute 100 didn't received the message from 200 regarding file with UUID 1","timestamp":"2023-05-07T11:59:41.864Z"}
+{"level":"info","message":"192.168.1.40 Requested College List","timestamp":"2023-05-07T11:59:42.042Z"}
