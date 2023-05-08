@@ -11,6 +11,7 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const path = require("path");
+const crypto = require('crypto');
 const workerpool = require('workerpool');
 
 const pool = workerpool.pool('./workers/streamWorker',{
@@ -434,7 +435,7 @@ const startDownload = async (id) => {
   const {ip_address} = response.data;
   // fun(2,downloadname,filename,total_size);
   for (let i = 0; i < downloadFile.parts; i++) {
-    pool.exec('recieveStreamedData', [i,downloadFile.fileName,downloadFile.id,download_loc,ip_address]).then(async() => {
+    pool.exec('recieveStreamedData', [i,downloadFile.fileName,downloadFile.id,download_loc,ip_address,downloadFile.secretKey]).then(async() => {
       downloadFile.partsRecieved++;
       downloadFile.partArray[i]=1;
       downloadFile.progress = (downloadFile.partsRecieved/downloadFile.parts)*100;
@@ -513,15 +514,10 @@ io.on('connection', (socket) => {
     const streamFilePath = path.join(TEMP_DIR, fileObj.id,`${fileObj.fileName}-p-${partIndex}.part`);
     let stream = ss.createStream();
     ss(socket).emit('part', stream);
-
-    const secret_key = 'my_secret_key';
-    const cipher = crypto.createCipher('aes-256-cbc', secret_key);
-
+    const cipher = crypto.createCipher('aes-256-cbc', fileObj.secretKey);
     const inputStream = fs.createReadStream(streamFilePath);
     const encryptedStream = inputStream.pipe(cipher);
-
     encryptedStream.pipe(stream);
-
     stream.on('finish', () => {
       console.log('Part '+partIndex+' sent');
       fileObj.partsSent++;
