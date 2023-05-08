@@ -11,31 +11,35 @@ let ss = require('socket.io-stream');
  * @param {*} serverAddress 
  * @returns 
  */
-function recieveStreamedData(partIndex, fileName, fileId,downloadPath,serverAddress) {
+function recieveStreamedData(partIndex, fileName, fileId, downloadPath, serverAddress) {
     return new Promise((resolve, reject) => {
-        try
-        {
+        try {
             const socket = require('socket.io-client')(`http://${serverAddress}`);
             socket.connect();
             socket.emit('request_part', { partIndex: partIndex, downloadId: fileId });
             const filebasename = path.basename(fileName);
             const destinationPath = path.join(downloadPath, `${filebasename}-p-${partIndex}.part`);
+
+            const secret_key = 'my_secret_key';
+            const decipher = crypto.createDecipher('aes-256-cbc', secret_key);
+
             ss(socket).on('part', (stream) => {
-                stream.pipe(fs.createWriteStream(destinationPath));
-                stream.on('finish', () => {
-                    console.log('part recieved');
+                const decryptedStream = stream.pipe(decipher);
+                decryptedStream.pipe(fs.createWriteStream(destinationPath));
+                decryptedStream.on('finish', () => {
+                    console.log('Part ' + partIndex + ' received');
                     socket.disconnect();
                     resolve();
                 });
             });
-        }
-        catch(err){
+        } catch (err) {
             console.log(err);
-            workerpool.workerEmit('status','failed');
+            workerpool.workerEmit('status', 'failed');
             reject();
         }
     });
 }
+
 workerpool.worker({
     recieveStreamedData: recieveStreamedData
 });

@@ -502,7 +502,7 @@ app.get('/start',async (req, res) => {
  */
 io.on('connection', (socket) => {
   console.log('Partition client connected');
-  socket.on('request_part', async({ partIndex,downloadId }) => {
+  socket.on('request_part', async({ partIndex, downloadId }) => {
     const fileObj = await File.findOne({where:{id:downloadId}});
     if(!fileObj){
       console.log('File not found');
@@ -513,8 +513,15 @@ io.on('connection', (socket) => {
     const streamFilePath = path.join(TEMP_DIR, fileObj.id,`${fileObj.fileName}-p-${partIndex}.part`);
     let stream = ss.createStream();
     ss(socket).emit('part', stream);
-    const inputStream = fs.createReadStream(streamFilePath)
-    inputStream.pipe(stream);
+
+    const secret_key = 'my_secret_key';
+    const cipher = crypto.createCipher('aes-256-cbc', secret_key);
+
+    const inputStream = fs.createReadStream(streamFilePath);
+    const encryptedStream = inputStream.pipe(cipher);
+
+    encryptedStream.pipe(stream);
+
     stream.on('finish', () => {
       console.log('Part '+partIndex+' sent');
       fileObj.partsSent++;
@@ -526,5 +533,6 @@ io.on('connection', (socket) => {
     });
   });
 });
+
 
 server.listen(port, () => console.log(`Downloader app listening on port <${port}>`));
