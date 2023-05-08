@@ -9,7 +9,9 @@ const path = require('path');
  * @param {*} end 
  * @param {*} index 
  */
-const createPartition = (filepath,fileName,outputDirectory,start,end,index) =>{
+const createPartition = async(filepath,fileName,outputDirectory,start,end,index) =>{
+  return new Promise((resolve,reject)=>{
+
     const inputFilePath = filepath;
     const outputFilePath = path.join(outputDirectory, `${fileName}-p-${index}.part`);
     const inputStream = fs.createReadStream(inputFilePath,{start:start,end:end});
@@ -19,7 +21,10 @@ const createPartition = (filepath,fileName,outputDirectory,start,end,index) =>{
       });
     inputStream.on('end', function() {
         outputStream.end();
+        console.log(`Part ${index} created`);
+        resolve();
     });
+  });
 }
 /**
  * 

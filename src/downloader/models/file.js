@@ -12,7 +12,7 @@ File.init({
     parts:{type:DataTypes.INTEGER},
     partsSent:{type:DataTypes.INTEGER},
     partsReceived:{type:DataTypes.INTEGER},
-    partsArray:{type:DataTypes.ARRAY(DataTypes.INTEGER), defaultValue:[]},
+    partsArray:{type:DataTypes.ARRAY(DataTypes.INTEGER)},
     progress:{type:DataTypes.INTEGER},
     type:{type: DataTypes.STRING},
     status:{type: DataTypes.STRING},

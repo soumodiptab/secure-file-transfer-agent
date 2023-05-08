@@ -55,7 +55,7 @@ app.use("/css",express.static(path.join(__dirname, "node_modules/bootstrap/dist/
 app.use("/js", express.static(path.join(__dirname, "node_modules/bootstrap/dist/js")))
 app.use("/js",express.static(path.join(__dirname, "node_modules/@popperjs/core/dist/umd")))
 app.use("/js", express.static(path.join(__dirname, "node_modules/jquery/dist")))
-sequelize.sync({force:true}).then(()=>{
+sequelize.sync().then(()=>{
   console.log('Database is ready');
 });
 var users = [
@@ -97,7 +97,7 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ['/login','/logout','/dfs_request'];
+  const unprotectedPaths = ['/login','/logout','/dfs_request','/upload'];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -181,10 +181,10 @@ app.post('/upload',async (req,res)=>{
     fs.rmSync(outputDirectory, { recursive: true });
   }
   fs.mkdirSync(outputDirectory);
-  for (let i = 0; i < PARTS; i++) {
-    createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
+  for (let i = 0; i < parts; i++) {
+    await createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
   }
-  // create file object
+  // create file objectlogi
   let fileObj = {
     id:uuid,
     fileName:fileName,
