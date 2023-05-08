@@ -341,11 +341,14 @@
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T13:15:16.389Z"}
 {"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T13:18:44.210Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T13:20:45.448Z"}
+<<<<<<< HEAD
 {"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T17:42:50.425Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T17:45:30.329Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T17:45:51.880Z"}
 {"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID eb44e9ec-1d0f-4503-b92b-7adc3af952d5","timestamp":"2023-05-08T17:47:23.486Z"}
 {"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-08T17:47:23.685Z"}
+=======
+>>>>>>> 4deaa94d7e657ea94c952817277418822b1b014c
 {"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T13:41:52.572Z"}
 {"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T13:42:25.935Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T13:42:49.240Z"}
