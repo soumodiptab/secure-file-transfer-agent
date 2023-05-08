@@ -44,7 +44,17 @@ File.init({
     parts:{type:DataTypes.INTEGER},
     partsSent:{type:DataTypes.INTEGER},
     partsReceived:{type:DataTypes.INTEGER},
-    partsArray:{type:DataTypes.ARRAY(DataTypes.INTEGER)},
+    partsArray:{type:DataTypes.STRING,
+        get: function() {
+          const val = this.getDataValue('partsArray').split(',');
+          let values = val.map(Number);
+          return values;
+        },
+        set: function(val) {
+          const values = val.map(String);
+          this.setDataValue('partsArray', values.join(','));
+        }
+    },
     progress:{type:DataTypes.INTEGER},
     type:{type: DataTypes.STRING},
     status:{type: DataTypes.STRING},
@@ -64,6 +74,7 @@ const bodyParser = require('body-parser')
 let ss = require('socket.io-stream');
 const { where , Op } = require('sequelize');
 const { start } = require('repl');
+const { create } = require('domain');
 // setup for express
 app.use(ejslayouts);
 app.set("layout", "layouts/index");
@@ -125,7 +136,7 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ['/login','/logout','/dfs_request','/upload','/start'];
+  const unprotectedPaths = ['/login','/logout','/dfs_request','/start'];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -185,6 +196,13 @@ app.get('/upload',(req,res)=>{
   res.render('upload',{title: 'Downloader Upload',active :'upload',dirpath:absoluteDirectory})
 });
 
+
+const createPartitions = async(filePath, fileName, outputDirectory,parts,size) => {
+  for (let i = 0; i < parts; i++) {
+    await createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
+  }
+};
+
 /**
  * Send file information to dfs server
  */
@@ -229,9 +247,7 @@ app.post('/upload',async (req,res)=>{
   // add file object to uploads array
   await File.create(fileObj);
   
-  for (let i = 0; i < parts; i++) {
-    await createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
-  }
+  createPartitions(filePath, fileName, outputDirectory,parts,size);
   // create file objectlogi
   
   await axios.post(`http://${DFS_SERVER_ADDRESS}/sender_request`,{
@@ -406,6 +422,7 @@ app.post('/dfs_request', async (req, res) => {
     size:size,
     parts:parts,
     partsRecieved:0,
+    partsArray:new Array(parts).fill(0),
     progress:0,
     type:'DOWNLOAD',
     status:'REQUESTED',
@@ -420,6 +437,9 @@ app.post('/dfs_request', async (req, res) => {
 const startDownload = async (id) => {
   // const socket = io('http://localhost:4000');
   const downloadFile = await File.findOne({where:{id:id}});
+  if (!fs.existsSync(DEFAULT_DOWNLOAD_DIR)) {
+    fs.mkdirSync(DEFAULT_DOWNLOAD_DIR);
+  }
   const download_loc = path.join(DEFAULT_DOWNLOAD_DIR, downloadFile.id);
   if (fs.existsSync(download_loc)) {
     fs.rmSync(download_loc, { recursive: true });
@@ -435,6 +455,7 @@ const startDownload = async (id) => {
   // fun(2,downloadname,filename,total_size);
   for (let i = 0; i < downloadFile.parts; i++) {
     pool.exec('recieveStreamedData', [i,downloadFile.fileName,downloadFile.id,download_loc,ip_address]).then(async() => {
+      downloadFile.reload();
       downloadFile.partsRecieved++;
       downloadFile.partArray[i]=1;
       downloadFile.progress = (downloadFile.partsRecieved/downloadFile.parts)*100;
