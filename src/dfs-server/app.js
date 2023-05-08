@@ -153,6 +153,28 @@ app.post('/sender_request', async (req, res) => {
   }
 });
 
+app.post('/get_address', async (req, res) => {
+  try{
+    const {id} = req.body;
+    const stream = fs.createReadStream('users.csv')
+        .pipe(csv());
+    logger.info("Institute "+id+"'s IP Address  requested");
+    for await (const row of stream) {
+      const username = row.username;
+      if(username == id)
+      {
+        res.status(200).json({ip_address: row.ip_address});
+        return;
+      }
+    }
+    res.status(400).json({ error: 'Institute ID not found' });
+  }
+  catch(error)
+  {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}); 
 app.post('/accept_download', async (req, res) => {
   try {
     const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;

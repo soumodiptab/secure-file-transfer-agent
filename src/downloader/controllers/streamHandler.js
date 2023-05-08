@@ -33,7 +33,8 @@ const createPartition = async(filepath,fileName,outputDirectory,start,end,index)
  * @param {*} fileId 
  * @param {*} parts 
  */
-const mergeFiles = (fileName, downloadPath,fileId,parts) => {
+const mergeFiles = async (fileName, downloadPath,fileId,parts) => {
+  return new Promise((resolve,reject)=>{
     if(!fs.existsSync(path.join(downloadPath,fileId))){
       throw new Error('Merge Folder not found');
     }
@@ -63,8 +64,10 @@ const mergeFiles = (fileName, downloadPath,fileId,parts) => {
     fileOutStream.on('finish', () => {
       fs.rmSync(path.join(downloadPath,fileId), { recursive: true });
       console.log('Merging finished');
-      return;
+      resolve();
     });
+
+  });
   };
 
   module.exports = {

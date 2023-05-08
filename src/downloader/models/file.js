@@ -1,14 +1,14 @@
 const {Model, DataTypes, Sequelize} = require('sequelize');
-const sequelize = require('../controllers/dbHandler');
+const sequelize = require('../server');
 class File extends Model {
 };
 
 File.init({
-    id :{type: DataTypes.INTEGER, primaryKey: true},
+    id :{type: DataTypes.STRING,primaryKey:true},
     fileName:{type: DataTypes.STRING},
     filePath:{type: DataTypes.STRING},
     partPAth:{type: DataTypes.STRING},
-    size:{type:DataTypes.BIGINT},
+    size:{type:DataTypes.INTEGER},
     parts:{type:DataTypes.INTEGER},
     partsSent:{type:DataTypes.INTEGER},
     partsReceived:{type:DataTypes.INTEGER},

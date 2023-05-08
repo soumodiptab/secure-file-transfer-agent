@@ -1,70 +1,57 @@
-<h2>Requests Board</h2>
+<div class="container my-5">
+  <h1 class="mb-4 text-center">Requests Board</h1>
+  <div class=container">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Sender</th>
+          <th>Status</th>
+          <th>Size</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% requested_downloads.forEach(download=> { %>
+          <tr>
+            <td>
+              <%= download.id %>
+            </td>
+            <td>
+              <%= download.name %>
+            </td>
+            <td>
+              <%= download.Sender %>
+            </td>
+            <td>
+              <%= download.status %>
+            </td>
+            <td>
+              <%= download.Size %>
+            </td>
+            <td>
+              <% if (download.status==='REQUESTED' ) { %>
+                <form method="post" action="/accept">
+                  <input type="hidden" name="id" value="<%=download.id%>">
+                  <input type="hidden" name="name" value="<%= download.name %>">
+                  <input type="hidden" name="Sender" value="<%= download.Sender %>">
+                  <button type="submit" class="btn btn-success">Accept</button>
+                </form>
+                <form method="post" action="/reject">
+                  <input type="hidden" name="id" value="<%=download.id%>">
+                  <input type="hidden" name="name" value="<%= download.name %>">
+                  <input type="hidden" name="Sender" value="<%= download.Sender %>">
+                  <button type="submit" class="btn btn-danger">Reject</button>
+                </form>
+                <% } else { %>
+                  <span>-</span>
+                  <% } %>
+            </td>
+          </tr>
+          <% }) %>
 
-<!-- <ul>
-    <% requested_downloads.forEach(download => { %>
-      <li>
-        <%= download.name %> - <%= download.status %>
-        <% if (download.status === 'Queued') { %>
-            ,       Size : <%= download.Size %> KB
-        <% } %>
-      </li>
-    <% }) %>
-  </ul> -->
-
-<table class="table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Sender</th>
-      <th>Status</th>
-      <th>Size (KB)</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% requested_downloads.forEach(download=> { %>
-      <tr>
-        <td>
-          <%= download.id %>
-        </td>
-        <td>
-          <%= download.name %>
-        </td>
-        <td>
-          <%= download.Sender %>
-        </td>
-        <td>
-          <%= download.status %>
-        </td>
-        <% if (download.status==='Queued' ) { %>
-          <td>
-            <%= download.Size %>
-          </td>
-          <% } else { %>
-            <td>-</td>
-            <% } %>
-
-              <td>
-                <% if (download.status==='Queued' ) { %>
-                  <form method="post" action="/accept">
-                    <input type="hidden" name="id" value="<%=download.id%>">
-                    <input type="hidden" name="name" value="<%= download.name %>">
-                    <input type="hidden" name="Sender" value="<%= download.Sender %>">
-                    <button type="submit" class="btn btn-success">Accept</button>
-                  </form>
-                  <form method="post" action="/reject">
-                    <input type="hidden" name="id" value="<%=download.id%>">
-                    <input type="hidden" name="name" value="<%= download.name %>">
-                    <input type="hidden" name="Sender" value="<%= download.Sender %>">
-                    <button type="submit" class="btn btn-danger">Reject</button>
-                  </form>
-                  <% } else { %>
-                    <span>-</span>
-                    <% } %>
-              </td>
-
-      </tr>
-      <% }) %>
-
-  </tbody>
-</table>
+      </tbody>
+    </table>
+  </div>
+</div>

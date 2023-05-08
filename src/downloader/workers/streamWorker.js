@@ -15,7 +15,7 @@ function recieveStreamedData(partIndex, fileName, fileId,downloadPath,serverAddr
     return new Promise((resolve, reject) => {
         try
         {
-            const socket = require('socket.io-client')(serverAddress);
+            const socket = require('socket.io-client')(`http://${serverAddress}`);
             socket.connect();
             socket.emit('request_part', { partIndex: partIndex, downloadId: fileId });
             const filebasename = path.basename(fileName);

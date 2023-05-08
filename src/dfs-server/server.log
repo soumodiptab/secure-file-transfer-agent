@@ -217,3 +217,127 @@
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-07T22:49:40.636Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-07T22:50:38.869Z"}
 {"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-07T22:54:26.891Z"}
+{"level":"info","message":"Institute 200 Not Found","timestamp":"2023-05-08T07:52:36.089Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T07:53:42.252Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T07:56:22.151Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T07:58:23.456Z"}
+{"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID bbc5a733-ac2e-42ab-a341-c80f1094de77","timestamp":"2023-05-08T08:09:56.534Z"}
+{"level":"info","message":"Message not delivered to Institute 200","timestamp":"2023-05-08T08:15:45.563Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T08:24:27.836Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T08:32:23.140Z"}
+{"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID 60275b44-3ec7-457e-9dee-0923ea8d0585","timestamp":"2023-05-08T08:34:35.496Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-08T08:35:16.888Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T08:35:50.123Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T08:35:50.898Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T08:36:06.292Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T08:42:10.208Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T08:53:02.207Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T09:00:43.834Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T09:02:21.014Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T09:22:57.212Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:23:02.500Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T10:23:41.078Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:31.017Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:35.805Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:37.145Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:39.336Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:42.763Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:45.337Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:48.781Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:32:51.352Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:33:04.265Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:33:06.564Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:33:17.888Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:33:25.472Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:33:27.743Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:33:29.569Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:36:34.352Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:36:49.037Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:36:56.230Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:02.302Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:11.671Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:22.966Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:43.840Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:52.302Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:55.395Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:37:57.103Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:38:16.993Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:38:29.465Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:38:52.821Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:39:08.701Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:39:11.835Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:39:39.325Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:39:40.447Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:39:42.212Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:39:46.823Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:40:01.355Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:40:02.729Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:40:07.409Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:40:23.333Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:40:31.048Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T10:40:34.205Z"}
+{"level":"info","message":"Institute 200's IP Address  requested","timestamp":"2023-05-08T10:43:45.079Z"}
+{"level":"info","message":"Institute 400's IP Address  requested","timestamp":"2023-05-08T10:43:58.328Z"}
+{"level":"info","message":"Institute 200's IP Address  requested","timestamp":"2023-05-08T10:44:05.055Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T10:44:10.453Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T10:50:57.102Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T10:51:03.204Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 60275b44-3ec7-457e-9dee-0923ea8d0585","timestamp":"2023-05-08T10:52:29.716Z"}
+{"level":"info","message":"Institute 100 didn't received the message from 200 regarding file with UUID 60275b44-3ec7-457e-9dee-0923ea8d0585","timestamp":"2023-05-08T10:52:29.760Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T10:52:29.925Z"}
+{"level":"info","message":"Institute undefined's IP Address  requested","timestamp":"2023-05-08T11:10:06.833Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T11:17:50.463Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:18:37.939Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:20:04.694Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:20:36.602Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:36:01.498Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:37:44.947Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T11:39:01.700Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:39:46.006Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:41:19.352Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:42:27.377Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:42:42.065Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:43:44.470Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:45:13.927Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:45:20.252Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:45:28.946Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:45:30.337Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:45:45.595Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:48:43.975Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:48:53.895Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:50:10.029Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T11:58:06.578Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:02:44.176Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:03:09.094Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:03:17.641Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:04:14.839Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:05:25.262Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:05:56.349Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:06:09.499Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:06:18.045Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:06:33.669Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-08T12:44:06.717Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:45:04.136Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:45:25.693Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:45:58.133Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:46:05.383Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:46:21.949Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:48:08.158Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:48:14.137Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:48:26.799Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:48:27.767Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:48:45.043Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:49:10.020Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:49:20.493Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:49:22.447Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:49:25.690Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:49:26.452Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:50:14.425Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T12:50:15.000Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:51:24.599Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:56:09.244Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T12:57:45.572Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T13:06:04.839Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T13:15:16.389Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-08T13:18:44.210Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-08T13:20:45.448Z"}

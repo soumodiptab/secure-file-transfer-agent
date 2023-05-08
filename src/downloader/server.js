@@ -12,7 +12,7 @@ const LocalStrategy = require('passport-local').Strategy;
 const bcrypt = require('bcrypt');
 const path = require("path");
 const workerpool = require('workerpool');
-const sequelize = require('./controllers/dbHandler');
+
 const pool = workerpool.pool('./workers/streamWorker',{
   minWorkers: config.get('MIN_WORKERS'),
   maxWorkers: config.get('MAX_WORKERS')
@@ -20,15 +20,42 @@ const pool = workerpool.pool('./workers/streamWorker',{
 const {createPartition,mergeFiles} = require('./controllers/streamHandler.js');
 const app = express();
 const http = require('http');
-const {Server} = require('socket.io');
 const server = http.createServer(app);
-const io = new Server(server);
+const io =require('socket.io')(server,{cors:{origin:'*'}});
 const PARTITION_SIZE = config.get('PART_SIZE');
 const TEMP_DIR = config.get('TEMP_DIR');
 const DEFAULT_DOWNLOAD_DIR = config.get('DOWNLOAD_DIR');
 const DFS_SERVER_ADDRESS = config.get('DFS_SERVER');
-const File = require('./models/file');
 const port = process.argv[2];
+const {Model, DataTypes, Sequelize} = require('sequelize');
+const sequelize = new Sequelize('node-db','user','pass',{
+    dialect: 'sqlite',
+    host: `./${port}.sqlite`
+});
+
+class File extends Model {
+};
+File.init({
+    id :{type: DataTypes.STRING,primaryKey:true},
+    fileName:{type: DataTypes.STRING},
+    filePath:{type: DataTypes.STRING},
+    partPAth:{type: DataTypes.STRING},
+    size:{type:DataTypes.INTEGER},
+    parts:{type:DataTypes.INTEGER},
+    partsSent:{type:DataTypes.INTEGER},
+    partsReceived:{type:DataTypes.INTEGER},
+    partsArray:{type:DataTypes.ARRAY(DataTypes.INTEGER)},
+    progress:{type:DataTypes.INTEGER},
+    type:{type: DataTypes.STRING},
+    status:{type: DataTypes.STRING},
+    senderId:{type: DataTypes.STRING},
+    receiverId :{type: DataTypes.STRING},
+    secretKey : {type: DataTypes.STRING} 
+},{
+    sequelize,
+    modelName: 'file'
+});
+// const File = require('./models/file');
 const createCsvWriter = require('csv-writer').createObjectCsvWriter;
 // const dfs_server_ip = 'localhost'
 // const dfs_server_port = 3001
@@ -36,6 +63,7 @@ const filesendRouter = require('./routes/fileSender');
 const bodyParser = require('body-parser')
 let ss = require('socket.io-stream');
 const { where , Op } = require('sequelize');
+const { start } = require('repl');
 // setup for express
 app.use(ejslayouts);
 app.set("layout", "layouts/index");
@@ -97,7 +125,7 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ['/login','/logout','/dfs_request','/upload'];
+  const unprotectedPaths = ['/login','/logout','/dfs_request','/upload','/start'];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -161,6 +189,7 @@ app.get('/upload',(req,res)=>{
  * Send file information to dfs server
  */
 app.post('/upload',async (req,res)=>{
+  // const senderpeerid = 100;
   const senderpeerid = req.user.username;
   const filePath = req.body.finalpath;
   const fileName = path.basename(filePath);
@@ -181,10 +210,7 @@ app.post('/upload',async (req,res)=>{
     fs.rmSync(outputDirectory, { recursive: true });
   }
   fs.mkdirSync(outputDirectory);
-  for (let i = 0; i < parts; i++) {
-    await createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
-  }
-  // create file objectlogi
+
   let fileObj = {
     id:uuid,
     fileName:fileName,
@@ -202,6 +228,12 @@ app.post('/upload',async (req,res)=>{
   };
   // add file object to uploads array
   await File.create(fileObj);
+  
+  for (let i = 0; i < parts; i++) {
+    await createPartition(filePath,fileName,outputDirectory,i*PARTITION_SIZE,Math.min((i+1)*PARTITION_SIZE,size),i);
+  }
+  // create file objectlogi
+  
   await axios.post(`http://${DFS_SERVER_ADDRESS}/sender_request`,{
     uuid:uuid,
     filename:fileName,
@@ -286,21 +318,32 @@ app.post('/getusers', async (req, res) => {
 // });
 
 //Requests
-app.get('/requests', (req, res) => {
+app.get('/requests', async(req, res) => {
   const requested_downloads = [];
-  fs.createReadStream('requests.csv')
-    .pipe(csv())
-    .on('data', (data) => {
-      const { uuid,filename, size, sender_id, accept } = data;
-      if (accept === '0') {
-        requested_downloads.push({ id : uuid,name: filename, status: 'Queued', Size: size, Sender: sender_id });
-      }
-    })
-    .on('end', () => {
-      res.render('requests', { title: 'Downloader Requests', active: 'requests', requested_downloads });
-    });
+  const files = await File.findAll({
+    where : {
+      status : {
+        [Op.in]: ['REQUESTED','ACCEPTED','REJECTED']
+      },
+      type : 'DOWNLOAD'
+    }
+  });
+  files.forEach((file) => {
+    requested_downloads.push({ id : file.id,name: file.fileName, status: file.status, Size: convertBytesToNearest(file.size), Sender: file.senderId });
+  })
+  res.render('requests', { title: 'Downloader Requests', active: 'requests', requested_downloads });
+  // fs.createReadStream('requests.csv')
+  //   .pipe(csv())
+  //   .on('data', (data) => {
+  //     const { uuid,filename, size, sender_id, accept } = data;
+  //     if (accept === '0') {
+  //       requested_downloads.push({ id : uuid,name: filename, status: 'Queued', Size: size, Sender: sender_id });
+  //     }
+  //   })
+  //   .on('end', () => {
+  //     res.render('requests', { title: 'Downloader Requests', active: 'requests', requested_downloads });
+  //   });
 });
-
 //Transfers
 app.get('/transfers',async (req, res) => {
   const ongoing_downloads = [];
@@ -312,7 +355,7 @@ app.get('/transfers',async (req, res) => {
     }
   });
   downloads.forEach(file => {
-    ongoing_downloads.push({ name: file.fileName, status: file.status, Size: file.size, Sender: file.senderId });
+    ongoing_downloads.push({ name: file.fileName, status: file.status, Size: convertBytesToNearest(file.size), Sender: file.senderId });
   });
   res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
   // fs.createReadStream('requests.csv')
@@ -326,8 +369,7 @@ app.get('/transfers',async (req, res) => {
   //   .on('end', () => {
   //     res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
   //   });
-})
-
+});
 //downloads
 app.get('/downloads', (req, res) => {
 
@@ -388,9 +430,11 @@ const startDownload = async (id) => {
   downloadFile.partsRecieved = 0;
   downloadFile.progress = 0;
   await downloadFile.save();
+  const response = await axios.post(`http://${DFS_SERVER_ADDRESS}/get_address`,{id :downloadFile.senderId});
+  const {ip_address} = response.data;
   // fun(2,downloadname,filename,total_size);
-  for (let i = 0; i < total_parts; i++) {
-    pool.exec('recieveStreamedData', [i,downloadFile.name,downloadFile.id,download_loc]).then(async() => {
+  for (let i = 0; i < downloadFile.parts; i++) {
+    pool.exec('recieveStreamedData', [i,downloadFile.fileName,downloadFile.id,download_loc,ip_address]).then(async() => {
       downloadFile.partsRecieved++;
       downloadFile.partArray[i]=1;
       downloadFile.progress = (downloadFile.partsRecieved/downloadFile.parts)*100;
@@ -399,7 +443,7 @@ const startDownload = async (id) => {
       if(downloadFile.partsRecieved == downloadFile.parts){
         downloadFile.status = 'MERGING';
         console.log('Merging files');
-        mergeFiles(downloadFile.fileName, DEFAULT_DOWNLOAD_DIR,downloadFile.id,downloadFile.parts);
+        await mergeFiles(downloadFile.fileName, DEFAULT_DOWNLOAD_DIR,downloadFile.id,downloadFile.parts);
         downloadFile.status = 'COMPLETED';
         console.log('Download complete');
       }
@@ -426,42 +470,7 @@ app.post('/accept',async (req, res) => {
   }
   await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
   startDownload(id);
-  // Open CSV file and create a new stream for reading
-  // const results = [];
-  // fs.createReadStream('requests.csv')
-  //   .pipe(csv())
-  //   .on('data', (data) => results.push(data))
-  //   .on('end', () => {
-  //     // Find matching row in CSV file and update 'accept' value
-  //     const updatedResults = results.map((result) => {
-  //       if (result.filename === name  && result.sender_id === Sender) 
-  //       {
-  //         const requestBody = {
-  //           uuid: result.uuid,
-  //           filename: result.filename,
-  //           size: result.size,
-  //           sender_id: result.sender_id,
-  //           receiver_id: result.receiver_id,
-  //           accept: result.accept
-  //         };
-  //         axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody)
-  //         return { ...result, accept: '-1' };
-  //       }
-  //       return result;
-  //     });
-
-  //     // Write updated data back to CSV file
-  //     const writeStream = fs.createWriteStream('requests.csv');
-  //     writeStream.write('uuid,filename,size,sender_id,receiver_id,secret_key,accept\n');
-  //     updatedResults.forEach((result) => {
-  //       writeStream.write(
-  //         `${result.uuid},${result.filename},${result.size},${result.sender_id},${result.receiver_id},${result.secret_key},${result.accept}\n`
-  //       );
-  //     });
-
-      // Redirect to the same page
   res.redirect('/requests');
-    // });
 });
 app.post('/reject',async (req, res) => {
   const { id,name, Sender } = req.body;
@@ -482,13 +491,19 @@ app.post('/reject',async (req, res) => {
     // });
 });
 
+app.get('/start',async (req, res) => {
+  const {id} = req.body;
+  startDownload(id);
+  res.send('Download started');
+})
+
 /**
  *  IO Connection for handling file transfer from sender to reciever
  */
 io.on('connection', (socket) => {
   console.log('Partition client connected');
-  socket.on('request_part', ({ partIndex,downloadId }) => {
-    const fileObj =uploads.find((file)=>file.id===downloadId);
+  socket.on('request_part', async({ partIndex,downloadId }) => {
+    const fileObj = await File.findOne({where:{id:downloadId}});
     if(!fileObj){
       console.log('File not found');
       socket.disconnect();
@@ -500,7 +515,7 @@ io.on('connection', (socket) => {
     ss(socket).emit('part', stream);
     const inputStream = fs.createReadStream(streamFilePath)
     inputStream.pipe(stream);
-    inputStream.on('end', () => {
+    stream.on('finish', () => {
       console.log('Part '+partIndex+' sent');
       fileObj.partsSent++;
       fileObj.progress = (fileObj.partsSent/fileObj.parts)*100;
@@ -512,4 +527,4 @@ io.on('connection', (socket) => {
   });
 });
 
-app.listen(port,'0.0.0.0', () => console.log(`Downloader app listening on port <${port}>`));
+server.listen(port, () => console.log(`Downloader app listening on port <${port}>`));
