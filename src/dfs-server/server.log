@@ -42,3 +42,10 @@
 {"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T17:58:07.941Z"}
 {"level":"info","message":"Institute 200 accepted the request to download the file with UUID 5e2b628c-60ec-44be-9741-4c9eae28961c","timestamp":"2023-05-09T17:58:57.669Z"}
 {"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T17:58:57.719Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T18:37:29.107Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T18:37:49.425Z"}
+{"level":"info","message":"Institute 100 Requested to send file The.Mandalorian.S03E03.1080p.HEVC.x265-MeGusta.mkv to Institute 200 with size 573000445 with UUID ec2ada47-f711-4765-a34f-115cc5819dc6","timestamp":"2023-05-09T18:38:05.517Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T18:38:05.610Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T18:39:19.951Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID ec2ada47-f711-4765-a34f-115cc5819dc6","timestamp":"2023-05-09T18:39:29.245Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T18:39:29.266Z"}
