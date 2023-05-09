@@ -17,6 +17,7 @@
         "bcrypt": "^5.1.0",
         "body-parser": "^1.20.2",
         "config": "^3.3.9",
+        "crypto": "^1.0.1",
         "csv": "^6.2.8",
         "csv-parser": "^3.0.0",
         "csv-writer": "^1.6.0",

@@ -107,7 +107,7 @@ app.post('/sender_request', async (req, res) => {
         // Make a request to the receiver's API with the necessary data
         // const response = await axios.post(`http://${receiverIp}/dfs_request`, {
         try {
-            const response = await axios.post(`http://localhost:3001/dfs_request`, {
+            const response = await axios.post(`http://${receiverIp}/dfs_request`, {
             uuid,
             filename,
             size,
@@ -194,12 +194,19 @@ app.post('/accept_download', async (req, res) => {
     {
       logger.info(`Institute ${receiver_id} rejected the request to download the file with UUID ${uuid}`);
     }
-    const receiverResponse = await axios.post('http://localhost:3000/receiver_request', receiverRequest);
+    const stream = fs.createReadStream('users.csv').pipe(csv());
+    for await (const row of stream) {
 
-    if (receiverResponse.data === 1) {
-      logger.info(`Institute ${sender_id} received the message from ${receiver_id} regarding file with UUID ${uuid}`);
-    } else {
-      logger.info(`Institute ${sender_id} didn't received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+      if (row.username === sender_id) {
+        const senderIP = row.ip_address;
+        const receiverResponse = await axios.post(`http://${senderIP}/receiver_request`, receiverRequest);
+
+        if (receiverResponse.data === 1) {
+          logger.info(`Institute ${sender_id} received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+        } else {
+          logger.info(`Institute ${sender_id} didn't received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+        }
+      }
     }
 
     res.status(200).send(receiverResponse.data);
@@ -210,6 +217,6 @@ app.post('/accept_download', async (req, res) => {
 });
 
 
-app.listen(4000, () => {
+app.listen(4000,'0.0.0.0' ,() => {
     logger.info('Server started on port 3000');
 });
