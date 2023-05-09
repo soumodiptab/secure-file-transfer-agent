@@ -33,3 +33,52 @@
       <% }) %>
     </tbody>
   </table>
+
+  <!-- <table class="table">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Status</th>
+        <th>Percentage Downloaded</th>
+      </tr>
+    </thead>
+    <tbody id="table-body">
+    </tbody>
+  </table>
+
+
+  <script>
+        function getOngoingDownloads() {
+      $.ajax({
+        url: "/transfers",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+          // Update the table with the new data
+          updateTable(data.ongoing_downloads);
+        },
+        error: function (xhr, status, error) {
+          console.log("Error: " + error);
+        },
+      });
+    }
+
+        setInterval(function () {
+      getOngoingDownloads();
+    }, 500);
+
+        function updateTable(ongoing_downloads) {
+      var tbody = $("#table-body");
+      tbody.empty();
+      ongoing_downloads.forEach(function (download) {
+        var row = $("<tr>");
+        row.append($("<td>").text(download.name));
+        row.append($("<td>").text(download.status));
+        row.append($("<td>").text(download._progress));
+        tbody.append(row);
+      });
+    }
+
+  </script> -->
+
+  

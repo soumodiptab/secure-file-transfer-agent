@@ -160,7 +160,7 @@ app.post('/login', passport.authenticate('local', { successRedirect: '/', failur
 /**
  * Logout Request
  */
-app.post('/logout', (req, res) => {
+app.get('/logout', (req, res) => {
   req.logout(function(err) {
     if (err) { return next(err); }
     res.redirect('/');
@@ -344,6 +344,7 @@ app.get('/requests', async(req, res) => {
   //     res.render('requests', { title: 'Downloader Requests', active: 'requests', requested_downloads });
   //   });
 });
+
 //Transfers
 app.get('/transfers',async (req, res) => {
   const ongoing_downloads = [];
@@ -355,7 +356,7 @@ app.get('/transfers',async (req, res) => {
     }
   });
   downloads.forEach(file => {
-    ongoing_downloads.push({ name: file.fileName, status: file.status, Size: convertBytesToNearest(file.size), Sender: file.senderId });
+    ongoing_downloads.push({ name: file.fileName, status: file.status, Size: convertBytesToNearest(file.size), Sender: file.senderId , _progress: file.progress});
   });
   res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
   // fs.createReadStream('requests.csv')
@@ -370,23 +371,59 @@ app.get('/transfers',async (req, res) => {
   //     res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
   //   });
 });
-//downloads
-app.get('/downloads', (req, res) => {
 
-  const downloads = [];
-  fs.createReadStream('requests.csv')
-    .pipe(csv())
-    .on('data', (data) => {
-      const { filename, size, sender_id, accept } = data;
-      if (accept === '1') {
-        downloads.push({ name: filename, status: 'Downloaded', Size: size, Sender: sender_id });
+//progress_Api
+app.get('/progress_api',async (req, res) => {
+  const ongoing_downloads = [];
+  let downloads = await File.findAll({
+    where : {
+      status : {
+        [Op.in] : ['UPLOADING', 'DOWNLOADING']
       }
-    })
-    .on('end', () => {
-      res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
-    });
-})
+    }
+  });
+  downloads.forEach(file => {
+    ongoing_downloads.push({ _id:file.id, name: file.fileName, status: file.status, Size: convertBytesToNearest(file.size), Sender: file.senderId , _progress: file.progress});
+  });
+  //res.render('transfers',{title: 'Downloader Transfers',active : 'transfers',ongoing_downloads});
 
+  res.send(ongoing_downloads);
+});
+
+
+//downloads
+// app.get('/downloads', (req, res) => {
+
+//   const downloads = [];
+//   fs.createReadStream('requests.csv')
+//     .pipe(csv())
+//     .on('data', (data) => {
+//       const { filename, size, sender_id, accept } = data;
+//       if (accept === '1') {
+//         downloads.push({ name: filename, status: 'Downloaded', Size: size, Sender: sender_id });
+//       }
+//     })
+//     .on('end', () => {
+//       res.render('downloads',{title: 'Downloader Downloads',active : 'downloads',downloads});
+//     });
+// })
+
+//download_try
+app.get('/downloads', async(req, res) => {
+  const downloads = [];
+  const files = await File.findAll({
+    where : {
+      status : {
+        [Op.in]: ['COMPLETED','DOWNLOADED','DOWNLOADING']
+      },
+      // type : 'DOWNLOAD'
+    }
+  });
+  files.forEach((file) => {
+    downloads.push({ name: file.fileName, status: file.status, Size: convertBytesToNearest(file.size)});
+  })
+  res.render('downloads', { title: 'Downloader Downloads', active: 'downloads', downloads });
+});
 
 app.post('/dfs_request', async (req, res) => {
   const { uuid, filename, size,parts, sender_id,receiver_id, secret_key } = req.body;
