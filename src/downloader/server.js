@@ -168,10 +168,12 @@ app.get("/", (req, res) => {
  */
 app.get("/login", (req, res) => {
   try {
-    axios.post("http://localhost:4000/login", { ip_address: ip.address() }).then((response) => {
-      console.log(response.data);
-      users = response.data;
-    });
+    axios
+      .post(`http://${DFS_SERVER_ADDRESS}/login`, { ip_address: ip.address() })
+      .then((response) => {
+        console.log(response.data);
+        users = response.data;
+      });
     res.render("login", { title: "Downloader Login", active: "login" });
   } catch (err) {
     console.log(err);
@@ -405,7 +407,7 @@ app.get("/transfers", async (req, res) => {
   let downloads = await File.findAll({
     where: {
       status: {
-        [Op.in]: ["DOWNLOADING", "PENDING", "UPLOADING"],
+        [Op.in]: ["DOWNLOADING", "UPLOADING"],
       },
     },
   });

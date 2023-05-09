@@ -3,5 +3,7 @@
 /src/dfs-server/node_modules/*
 /src/test/*/node_modules/*
 *.mkv
+*.mp4
+*.avi
 *.txt
 *.part
