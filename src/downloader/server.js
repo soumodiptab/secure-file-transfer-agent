@@ -143,7 +143,7 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ["/login", "/logout", "/dfs_request", "/start", "/merge"];
+  const unprotectedPaths = ["/login", "/logout", "/dfs_request", "/start", "/merge", "/ctr"];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -244,58 +244,63 @@ const createPartitions = async (filePath, fileName, outputDirectory, parts, size
  */
 app.post("/upload", async (req, res) => {
   // const senderpeerid = 100;
-  const senderpeerid = req.user.username;
-  const filePath = req.body.finalpath;
-  const fileName = path.basename(filePath);
-  const stats = fs.statSync(filePath);
-  const size = stats.size;
-  const parts = Math.ceil(size / PARTITION_SIZE);
-  const uuid = uuidv4();
-  // console.log(req.body.finalpath) ;
-  // console.log(req.body.recpeerid) ;
-  // console.log(req.body.secretkey) ;
-  // create temp directory if not exists
-  if (!fs.existsSync(TEMP_DIR)) {
-    fs.mkdirSync(TEMP_DIR);
+  try {
+    const senderpeerid = req.user.username;
+    const filePath = req.body.finalpath;
+    const fileName = path.basename(filePath);
+    const stats = fs.statSync(filePath);
+    const size = stats.size;
+    const parts = Math.ceil(size / PARTITION_SIZE);
+    const uuid = uuidv4();
+    // console.log(req.body.finalpath) ;
+    // console.log(req.body.recpeerid) ;
+    // console.log(req.body.secretkey) ;
+    // create temp directory if not exists
+    if (!fs.existsSync(TEMP_DIR)) {
+      fs.mkdirSync(TEMP_DIR);
+    }
+    // create output directory
+    const outputDirectory = path.join(TEMP_DIR, uuid);
+    if (fs.existsSync(outputDirectory)) {
+      fs.rmSync(outputDirectory, { recursive: true });
+    }
+    fs.mkdirSync(outputDirectory);
+
+    let fileObj = {
+      id: uuid,
+      fileName: fileName,
+      filePath: filePath,
+      partPAth: outputDirectory,
+      size: size,
+      parts: parts,
+      partsSent: 0,
+      progress: 0,
+      type: "UPLOAD",
+      status: "PENDING",
+      senderId: senderpeerid,
+      receiverId: req.body.recpeerid,
+      secretKey: req.body.secretkey,
+    };
+    // add file object to uploads array
+    await File.create(fileObj);
+
+    createPartitions(filePath, fileName, outputDirectory, parts, size);
+    // create file objectlogi
+
+    await axios.post(`http://${DFS_SERVER_ADDRESS}/sender_request`, {
+      uuid: uuid,
+      filename: fileName,
+      parts: parts,
+      size: size,
+      sender_id: senderpeerid,
+      secret_key: req.body.secretkey,
+      receiver_id: req.body.recpeerid,
+    });
+    res.redirect("/transfers");
+  } catch (err) {
+    console.log(err);
+    res.send("Error in file upload");
   }
-  // create output directory
-  const outputDirectory = path.join(TEMP_DIR, uuid);
-  if (fs.existsSync(outputDirectory)) {
-    fs.rmSync(outputDirectory, { recursive: true });
-  }
-  fs.mkdirSync(outputDirectory);
-
-  let fileObj = {
-    id: uuid,
-    fileName: fileName,
-    filePath: filePath,
-    partPAth: outputDirectory,
-    size: size,
-    parts: parts,
-    partsSent: 0,
-    progress: 0,
-    type: "UPLOAD",
-    status: "PENDING",
-    senderId: senderpeerid,
-    receiverId: req.body.recpeerid,
-    secretKey: req.body.secretkey,
-  };
-  // add file object to uploads array
-  await File.create(fileObj);
-
-  createPartitions(filePath, fileName, outputDirectory, parts, size);
-  // create file objectlogi
-
-  await axios.post(`http://${DFS_SERVER_ADDRESS}/sender_request`, {
-    uuid: uuid,
-    filename: fileName,
-    parts: parts,
-    size: size,
-    sender_id: senderpeerid,
-    secret_key: req.body.secretkey,
-    receiver_id: req.body.recpeerid,
-  });
-  res.send("File Uploaded");
 });
 /**
  * Converts bytes to nearest unit B,KB,MB,GB,TB
@@ -349,19 +354,19 @@ app.get("/dir", (req, res) => {
  * Mukul test : remove later
  */
 
-app.post("/getusers", async (req, res) => {
-  const ip_address = req.body.ip_address;
-  const encryptedData = [];
-  const stream = fs.createReadStream("users.csv").pipe(csv());
-  for await (const row of stream) {
-    const username = row.username;
-    const password = row.password;
-    // hash the password with bcrypt
-    const hashedPassword = await bcrypt.hash(password, 10);
-    encryptedData.push({ username, password: hashedPassword });
-  }
-  res.json(encryptedData);
-});
+// app.post("/getusers", async (req, res) => {
+//   const ip_address = req.body.ip_address;
+//   const encryptedData = [];
+//   const stream = fs.createReadStream("users.csv").pipe(csv());
+//   for await (const row of stream) {
+//     const username = row.username;
+//     const password = row.password;
+//     // hash the password with bcrypt
+//     const hashedPassword = await bcrypt.hash(password, 10);
+//     encryptedData.push({ username, password: hashedPassword });
+//   }
+//   res.json(encryptedData);
+// });
 // app.post('/configure',(req,res)=>{
 //   console.log('peerid:'+req.body.peerid);
 //   console.log('downloadpath:'+req.body.downloadpath);
@@ -446,27 +451,31 @@ app.get("/downloads", (req, res) => {
 });
 
 app.post("/dfs_request", async (req, res) => {
-  const { uuid, filename, size, parts, sender_id, receiver_id, secret_key } = req.body;
-  console.log("Received file request from sender:");
-  console.log(req.body);
-  const filePath = path.join(DEFAULT_DOWNLOAD_DIR, filename);
-  let fileObj = {
-    id: uuid,
-    fileName: filename,
-    filePath: filePath,
-    size: size,
-    parts: parts,
-    partsReceived: 0,
-    partsArray: new Array(parts).fill(0),
-    progress: 0,
-    type: "DOWNLOAD",
-    status: "REQUESTED",
-    senderId: sender_id,
-    receiverId: receiver_id,
-    secretKey: secret_key,
-  };
-  await File.create(fileObj);
-  res.status(200).json({ status: 1, data: "Message delivered" });
+  try {
+    const { uuid, filename, size, parts, sender_id, receiver_id, secret_key } = req.body;
+    console.log("Received file request from sender:");
+    console.log(req.body);
+    const filePath = path.join(DEFAULT_DOWNLOAD_DIR, filename);
+    let fileObj = {
+      id: uuid,
+      fileName: filename,
+      filePath: filePath,
+      size: size,
+      parts: parts,
+      partsReceived: 0,
+      partsArray: new Array(parts).fill(0),
+      progress: 0,
+      type: "DOWNLOAD",
+      status: "REQUESTED",
+      senderId: sender_id,
+      receiverId: receiver_id,
+      secretKey: secret_key,
+    };
+    await File.create(fileObj);
+    res.status(200).json({ status: 1, data: "Message delivered" });
+  } catch (err) {
+    res.status(500).json({ error: "Internal server error" });
+  }
 });
 /**
  * Start the download process
@@ -525,6 +534,7 @@ const startDownload = async (id) => {
             );
             downloadFile.reload();
             downloadFile.status = "COMPLETED";
+            await downloadFile.save();
             console.log("Download complete");
           }
         })
@@ -589,6 +599,7 @@ const resumeDownload = async (id) => {
             );
             downloadFile.reload();
             downloadFile.status = "COMPLETED";
+            await downloadFile.save();
             console.log("Download complete");
           }
         })
@@ -609,21 +620,25 @@ const resumeDownload = async (id) => {
  * Accept download and start download process
  */
 app.post("/accept", async (req, res) => {
-  const { id, name, Sender } = req.body;
-  console.log("Received file accept request from sender:");
-  const downloadFile = await File.findOne({ where: { id: id } });
-  downloadFile.status = "ACCEPTED";
-  await downloadFile.save();
-  const requestBody = {
-    uuid: downloadFile.id,
-    filename: downloadFile.fileName,
-    size: downloadFile.size,
-    sender_id: downloadFile.senderId,
-    receiver_id: downloadFile.receiverId,
-    accept: 1,
-  };
-  await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
-  startDownload(id);
+  try {
+    const { id, name, Sender } = req.body;
+    console.log("Received file accept request from sender:");
+    const downloadFile = await File.findOne({ where: { id: id } });
+    downloadFile.status = "ACCEPTED";
+    await downloadFile.save();
+    const requestBody = {
+      uuid: downloadFile.id,
+      filename: downloadFile.fileName,
+      size: downloadFile.size,
+      sender_id: downloadFile.senderId,
+      receiver_id: downloadFile.receiverId,
+      accept: 1,
+    };
+    await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
+    startDownload(id);
+  } catch (err) {
+    console.log(err);
+  }
   res.redirect("/requests");
 });
 
@@ -631,20 +646,24 @@ app.post("/accept", async (req, res) => {
  * Reject download
  */
 app.post("/reject", async (req, res) => {
-  const { id, name, Sender } = req.body;
-  console.log("Received file accept request from sender:");
-  const downloadFile = await File.findOne({ where: { id: id } });
-  downloadFile.status = "REJECTED";
-  await downloadFile.save();
-  const requestBody = {
-    uuid: downloadFile.id,
-    filename: downloadFile.fileName,
-    size: downloadFile.size,
-    sender_id: downloadFile.senderId,
-    receiver_id: downloadFile.receiverId,
-    accept: 0,
-  };
-  await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
+  try {
+    const { id, name, Sender } = req.body;
+    console.log("Received file accept request from sender:");
+    const downloadFile = await File.findOne({ where: { id: id } });
+    downloadFile.status = "REJECTED";
+    await downloadFile.save();
+    const requestBody = {
+      uuid: downloadFile.id,
+      filename: downloadFile.fileName,
+      size: downloadFile.size,
+      sender_id: downloadFile.senderId,
+      receiver_id: downloadFile.receiverId,
+      accept: 0,
+    };
+    await axios.post(`http://${DFS_SERVER_ADDRESS}/accept_download`, requestBody);
+  } catch (err) {
+    console.log(err);
+  }
   res.redirect("/requests");
   // });
 });
@@ -664,6 +683,23 @@ app.get("/merge", async (req, res) => {
   res.send("Merged files");
 });
 
+app.get("/progress", async (req, res) => {
+  const progressObjects = [];
+  const files = await File.findAll({
+    where: {
+      status: {
+        [Op.in]: ["DOWNLOADING", "UPLOADING"],
+      },
+    },
+  });
+  files.forEach((file) => {
+    progressObjects.push({
+      id: file.id,
+      progress: file.progress,
+    });
+  });
+  res.send({values: progressObjects});
+});
 /**
  *  IO Connection for handling file transfer from sender to reciever
  */

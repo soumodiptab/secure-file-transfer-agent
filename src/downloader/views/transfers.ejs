@@ -1,55 +1,62 @@
 <h2>Transfers Board</h2>
-
-<!-- <ul>
-    <% ongoing_downloads.forEach(download => { %>
-      <li>
-        <%= download.name %> - <%= download.status %>
-        <% if (download.status === 'Downloading') { %>
-            , Percentage Downloaded : <%= download.Size %> %
-        <% } %>
-      </li>
-    <% }) %>
-  </ul> -->
-
-  <table class="table">
-    <thead>
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Percentage Downloaded</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% ongoing_downloads.forEach(download=> { %>
       <tr>
-        <th>Name</th>
-        <th>Status</th>
-        <th>Percentage Downloaded</th>
+        <td>
+          <%= download.name %>
+        </td>
+        <td>
+          <%= download.status %>
+        </td>
+        <td>
+          <div class="progress">
+            <div class="progress-bar" role="progressbar" id="1234" aria-valuenow="0" aria-valuemin="0"
+              aria-valuemax="100"></div>
+          </div>
+        </td>
       </tr>
-    </thead>
-    <tbody>
-      <% ongoing_downloads.forEach(download => { %>
-        <tr>
-          <td><%= download.name %></td>
-          <td><%= download.status %></td>
-          <% if (download.status === 'Downloading') { %>
-            <td><%= download.Size %></td>
-          <% } else { %>
-            <td>-</td>
-          <% } %>
-        </tr>
       <% }) %>
-    </tbody>
-  </table>
-  <script>
-    function updateProgressBars() {
-      // Make an Ajax request to the backend server
-      fetch('/progress')
-        .then(response => response.json())
-        .then(data => {
-          // Update progress bars based on the received data
-          data.forEach(progress => {
-            const progressBar = document.getElementById(progress.id);
-            progressBar.style.width = progress.value + '%';
-          });
-          
-          // Repeat the process after a delay
-          setTimeout(updateProgressBars, 1000);
+  </tbody>
+</table>
+<script>
+  function updateProgressBars() {
+    // Make an Ajax request to the backend server
+    $.ajax({
+      type: "GET",
+      url: '/progress',
+      data: {},
+      success: function (data) {
+        var filesprogress = data.values;
+        var isupdated = false;
+        filesprogress.forEach(function (file) {
+          var progress = file.progress;
+          var id = file.id;
+          var progressbar = $('#' + id);
+          if(!progressbar)
+            return;
+          var currentvalue = progressbar.attr('aria-valuenow');
+          if (currentvalue == progress)
+            return;
+          progressbar.css('width', progress + '%');
+          progressbar.attr('aria-valuenow', progress);
+          progressbar.text(progress + '%');
+          isupdated = true;
         });
-    }
-    
-    // Start updating progress bars
+        if (isupdated)
+          setTimeout(updateProgressBars, 500);
+      }
+    });
+  }
+  // Start updating progress bars on page load
+  window.onload = () => {
     updateProgressBars();
-  </script>
+  }
+</script>
