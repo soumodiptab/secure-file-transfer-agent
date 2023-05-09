@@ -1,5 +1,5 @@
 {
-    "PART_SIZE": 268435456,
+    "PART_SIZE": 67108864,
     "TEMP_DIR": "./tmp",
     "DOWNLOAD_DIR": "./downloads",
     "MAX_WORKERS": 2,

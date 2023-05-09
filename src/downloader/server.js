@@ -79,6 +79,7 @@ let ss = require("socket.io-stream");
 const { where, Op } = require("sequelize");
 const { start } = require("repl");
 const { create } = require("domain");
+const { merge } = require("jquery");
 // setup for express
 app.use(ejslayouts);
 app.set("layout", "layouts/index");
@@ -142,7 +143,7 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ["/login", "/logout", "/dfs_request", "/start"];
+  const unprotectedPaths = ["/login", "/logout", "/dfs_request", "/start", "/merge"];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
@@ -656,6 +657,12 @@ app.get("/start", async (req, res) => {
   startDownload(id);
   res.send("Download started");
 });
+app.get("/merge", async (req, res) => {
+  const { id } = req.body;
+  const fileObj = await File.findOne({ where: { id: id } });
+  await mergeFiles(fileObj.fileName, DEFAULT_DOWNLOAD_DIR, fileObj.id, fileObj.parts);
+  res.send("Merged files");
+});
 
 /**
  *  IO Connection for handling file transfer from sender to reciever
@@ -700,4 +707,4 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(port, () => console.log(`Downloader app listening on port <${port}>`));
+server.listen(port, "0.0.0.0", () => console.log(`Downloader app listening on port <${port}>`));
