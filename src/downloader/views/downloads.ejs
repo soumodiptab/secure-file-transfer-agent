@@ -1,5 +1,5 @@
 <h2>Downloads Board</h2>
-
+<!-- 
 <!-- <ul>
     <% downloads.forEach(download => { %>
       <li>
@@ -9,9 +9,9 @@
         <% } %>
       </li>
     <% }) %>
-  </ul> -->
+  </ul> --> -->
 
-  <table class="table">
+<!-- <table class="table">
     <thead>
       <tr>
         <th>Name</th>
@@ -32,4 +32,29 @@
         </tr>
       <% }) %>
     </tbody>
-  </table>
+  </table> -->
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Status</th>
+      <th>Size</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% downloads.forEach(download=> { %>
+      <tr>
+        <td>
+          <%= download.name %>
+        </td>
+        <td>
+          <%= download.status %>
+        </td>
+        <td>
+          <%= download.Size %>
+        </td>
+      </tr>
+      <% }) %>
+  </tbody>
+</table>

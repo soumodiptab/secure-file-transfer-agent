@@ -191,7 +191,7 @@ app.post(
 /**
  * Logout Request
  */
-app.post("/logout", (req, res) => {
+app.get("/logout", (req, res) => {
   req.logout(function (err) {
     if (err) {
       return next(err);
@@ -405,12 +405,13 @@ app.get("/transfers", async (req, res) => {
   let downloads = await File.findAll({
     where: {
       status: {
-        [Op.notIn]: ["COMPLETED", "ACCEPTED", "REJECTED", "PENDING"],
+        [Op.in]: ["DOWNLOADING", "PENDING", "UPLOADING"],
       },
     },
   });
   downloads.forEach((file) => {
     ongoing_downloads.push({
+      id: file.id,
       name: file.fileName,
       status: file.status,
       Size: convertBytesToNearest(file.size),
@@ -426,28 +427,48 @@ app.get("/transfers", async (req, res) => {
 /**
  * RENDER DOWNLOADS PAGE
  */
-app.get("/downloads", (req, res) => {
+// app.get("/downloads", (req, res) => {
+//   const downloads = [];
+//   fs.createReadStream("requests.csv")
+//     .pipe(csv())
+//     .on("data", (data) => {
+//       const { filename, size, sender_id, accept } = data;
+//       if (accept === "1") {
+//         downloads.push({
+//           name: filename,
+//           status: "Downloaded",
+//           Size: size,
+//           Sender: sender_id,
+//         });
+//       }
+//     })
+//     .on("end", () => {
+//       res.render("downloads", {
+//         title: "Downloader Downloads",
+//         active: "downloads",
+//         downloads,
+//       });
+//     });
+// });
+
+app.get("/downloads", async (req, res) => {
   const downloads = [];
-  fs.createReadStream("requests.csv")
-    .pipe(csv())
-    .on("data", (data) => {
-      const { filename, size, sender_id, accept } = data;
-      if (accept === "1") {
-        downloads.push({
-          name: filename,
-          status: "Downloaded",
-          Size: size,
-          Sender: sender_id,
-        });
-      }
-    })
-    .on("end", () => {
-      res.render("downloads", {
-        title: "Downloader Downloads",
-        active: "downloads",
-        downloads,
-      });
+  const files = await File.findAll({
+    where: {
+      status: {
+        [Op.in]: ["COMPLETED", "DOWNLOADED"],
+      },
+      // type : 'DOWNLOAD'
+    },
+  });
+  files.forEach((file) => {
+    downloads.push({
+      name: file.fileName,
+      status: file.status,
+      Size: convertBytesToNearest(file.size),
     });
+  });
+  res.render("downloads", { title: "Downloader Downloads", active: "downloads", downloads });
 });
 
 app.post("/dfs_request", async (req, res) => {
@@ -688,7 +709,7 @@ app.get("/progress", async (req, res) => {
   const files = await File.findAll({
     where: {
       status: {
-        [Op.in]: ["DOWNLOADING", "UPLOADING"],
+        [Op.in]: ["DOWNLOADING", "UPLOADING", "PENDING"],
       },
     },
   });
@@ -698,7 +719,7 @@ app.get("/progress", async (req, res) => {
       progress: file.progress,
     });
   });
-  res.send({values: progressObjects});
+  res.send({ values: progressObjects });
 });
 /**
  *  IO Connection for handling file transfer from sender to reciever

@@ -18,8 +18,8 @@
         </td>
         <td>
           <div class="progress">
-            <div class="progress-bar" role="progressbar" id="1234" aria-valuenow="0" aria-valuemin="0"
-              aria-valuemax="100"></div>
+            <div class="progress-bar progress-bar-animated" role="progressbar" id="<%= download.id %>" aria-valuenow="0"
+              aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </td>
       </tr>
@@ -40,18 +40,18 @@
           var progress = file.progress;
           var id = file.id;
           var progressbar = $('#' + id);
-          if(!progressbar)
+          if (!progressbar)
             return;
           var currentvalue = progressbar.attr('aria-valuenow');
-          if (currentvalue == progress)
-            return;
+          /*if (currentvalue == progress)
+            return;*/
           progressbar.css('width', progress + '%');
           progressbar.attr('aria-valuenow', progress);
           progressbar.text(progress + '%');
           isupdated = true;
         });
-        if (isupdated)
-          setTimeout(updateProgressBars, 500);
+        //if (isupdated)
+        setTimeout(updateProgressBars, 500);
       }
     });
   }
