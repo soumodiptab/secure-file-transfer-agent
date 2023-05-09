@@ -33,3 +33,23 @@
       <% }) %>
     </tbody>
   </table>
+  <script>
+    function updateProgressBars() {
+      // Make an Ajax request to the backend server
+      fetch('/progress')
+        .then(response => response.json())
+        .then(data => {
+          // Update progress bars based on the received data
+          data.forEach(progress => {
+            const progressBar = document.getElementById(progress.id);
+            progressBar.style.width = progress.value + '%';
+          });
+          
+          // Repeat the process after a delay
+          setTimeout(updateProgressBars, 1000);
+        });
+    }
+    
+    // Start updating progress bars
+    updateProgressBars();
+  </script>

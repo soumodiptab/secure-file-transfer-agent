@@ -1,98 +1,81 @@
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:23:20.101Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:26:57.918Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:28:37.765Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:28:38.187Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:32:38.592Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:32:41.826Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:34:12.749Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:34:18.561Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:34:33.086Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:34:38.656Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:34:59.134Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:35:01.869Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:35:09.573Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:35:47.680Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:38:38.238Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:39:21.920Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:39:24.309Z"}
-{"level":"info","message":"Institute 100 Requested to send file glove.6B.50d.txt to Institute 200 with size 171350079 with UUID 65351076-ed76-48e4-af47-2a13779fa54a","timestamp":"2023-04-01T11:39:50.430Z"}
-{"level":"info","message":"Institute 200 Not Found","timestamp":"2023-04-01T11:39:50.469Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:39:50.624Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:41:26.427Z"}
-{"level":"info","message":"Institute 100 Requested to send file search.sh to Institute 200 with size 3 with UUID d6199ceb-4d58-4573-abd4-789361960684","timestamp":"2023-04-01T11:43:38.454Z"}
-{"level":"info","message":"Institute 200 Not Found","timestamp":"2023-04-01T11:52:14.750Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.154Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.154Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.156Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.159Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.205Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.206Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.209Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.211Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.256Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.257Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.260Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:15.261Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:27.747Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:39.238Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:40.339Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:40.699Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:40.987Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:41.268Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:41.495Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:41.732Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:52:41.955Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:53:41.374Z"}
-{"level":"info","message":"Institute 100 Requested to send file x.cpp to Institute 200 with size 106 with UUID 87c75e09-cf95-4a65-b38b-f2fb71326267","timestamp":"2023-04-01T11:54:04.017Z"}
-{"level":"info","message":"Message not delivered to Institute200","timestamp":"2023-04-01T11:54:04.023Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:55:23.837Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:55:25.462Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:55:33.383Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:55:35.683Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:56:41.726Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:56:42.998Z"}
-{"level":"info","message":"Institute 100 Requested to send file vm-2-key.pem to Institute 200 with size 2498 with UUID 56c59758-a8c0-499c-8d4f-8a9d558af69a","timestamp":"2023-04-01T11:57:10.546Z"}
-{"level":"info","message":" message: 'Message not delivered to Institute 200","timestamp":"2023-04-01T11:57:10.578Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:58:29.024Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T11:58:29.697Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:58:53.758Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T11:59:03.656Z"}
-{"level":"info","message":"Institute 100 Requested to send file vm-2-key.pem to Institute 200 with size 2498 with UUID 9683e31f-0e45-48f6-8cd0-bd1bd790ab41","timestamp":"2023-04-01T11:59:21.225Z"}
-{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-04-01T11:59:21.273Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T14:58:32.130Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:02:41.590Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:12:55.135Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:13:06.443Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:13:34.625Z"}
-{"level":"info","message":"Institute 100 Requested to send file glove.6B.50d.txt to Institute 200 with size 171350079 with UUID 03f0da97-5032-48cc-8f53-d2716791c17c","timestamp":"2023-04-01T15:14:14.919Z"}
-{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-04-01T15:14:14.957Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-01T15:24:19.627Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-01T15:24:58.112Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-11T20:52:07.814Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T20:52:32.681Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-11T20:56:11.705Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T20:57:10.446Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:01:23.933Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:16:19.365Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:16:35.757Z"}
-{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-04-11T21:16:36.199Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:32:54.507Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:39:09.786Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:45:37.277Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:47:56.445Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-04-23T11:50:23.128Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:01:40.901Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:02:45.234Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:04:04.574Z"}
-{"level":"info","message":"Institute undefined rejected the request to download the file with UUID undefined","timestamp":"2023-05-06T17:07:42.088Z"}
-{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:08:48.571Z"}
-{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:09:21.275Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:09:43.142Z"}
-{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:09:47.131Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:12:26.312Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:13:16.378Z"}
-{"level":"info","message":"Institute 300 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:13:42.854Z"}
-{"level":"info","message":"Institute 200 didn't received the message from 300 regarding file with UUID 1","timestamp":"2023-05-06T17:13:42.873Z"}
-{"level":"info","message":"Institute 500 accepted the request to download the file with UUID 1","timestamp":"2023-05-06T17:14:26.578Z"}
-{"level":"info","message":"Institute 400 didn't received the message from 500 regarding file with UUID 1","timestamp":"2023-05-06T17:14:26.590Z"}
-{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-06T17:15:10.331Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:02:42.642Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:04:47.566Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:04:48.060Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:19:04.486Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:19:16.094Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:26:37.992Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:26:51.371Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:27:02.580Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:27:03.363Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:27:15.220Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:27:15.968Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:28:18.761Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:32:01.320Z"}
+{"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID 635753ef-1677-46fa-badb-faccf59c8246","timestamp":"2023-05-09T10:32:32.669Z"}
+{"level":"info","message":"Message not delivered to Institute 200","timestamp":"2023-05-09T10:32:32.705Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:34:36.996Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:34:38.036Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:34:41.575Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:35:40.958Z"}
+{"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID 0ea94c4b-822f-4141-945e-cc8f53d6b984","timestamp":"2023-05-09T10:36:05.853Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T10:36:05.935Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 0ea94c4b-822f-4141-945e-cc8f53d6b984","timestamp":"2023-05-09T10:37:42.894Z"}
+{"level":"info","message":"Institute 100 didn't received the message from 200 regarding file with UUID 0ea94c4b-822f-4141-945e-cc8f53d6b984","timestamp":"2023-05-09T10:37:42.920Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:37:43.068Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T10:37:43.110Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:44:04.041Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:44:12.639Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:44:44.719Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:44:45.200Z"}
+{"level":"info","message":"Institute 100 Requested to send file Bumblebee.2018.1080p.BluRay.x264-[YTS.AM].mp4 to Institute 200 with size 1959019713 with UUID 03d95a71-0cd0-4faf-86a3-dc711b4ccd8e","timestamp":"2023-05-09T10:45:12.932Z"}
+{"level":"info","message":"Message not delivered to Institute 200","timestamp":"2023-05-09T10:45:12.986Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:52:50.408Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:52:55.262Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:53:16.203Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:53:24.545Z"}
+{"level":"info","message":"Institute 100 Requested to send file Bumblebee.2018.1080p.BluRay.x264-[YTS.AM].mp4 to Institute 200 with size 1959019713 with UUID 1078877d-5019-42a9-a923-6971063fa965","timestamp":"2023-05-09T10:53:46.107Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T10:53:46.179Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 1078877d-5019-42a9-a923-6971063fa965","timestamp":"2023-05-09T10:54:46.816Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:55:39.818Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:55:44.155Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:56:05.655Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:56:14.822Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:56:22.891Z"}
+{"level":"info","message":"Institute 100 Requested to send file Bumblebee.2018.1080p.BluRay.x264-[YTS.AM].mp4 to Institute 200 with size 1959019713 with UUID d1c90089-a326-4939-9a7b-af0bfdd2d447","timestamp":"2023-05-09T10:56:38.472Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T10:56:38.516Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID d1c90089-a326-4939-9a7b-af0bfdd2d447","timestamp":"2023-05-09T10:57:41.709Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T10:57:56.283Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:58:20.253Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T10:58:26.890Z"}
+{"level":"info","message":"Institute 100 Requested to send file Bumblebee.2018.1080p.BluRay.x264-[YTS.AM].mp4 to Institute 200 with size 1959019713 with UUID 94601d9e-e0bf-4010-bf4a-4167cd3b6fa5","timestamp":"2023-05-09T10:58:40.620Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T10:58:40.686Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T10:58:45.864Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID 94601d9e-e0bf-4010-bf4a-4167cd3b6fa5","timestamp":"2023-05-09T10:59:01.225Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T11:02:54.958Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T11:05:29.629Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T11:08:23.520Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T11:16:12.230Z"}
+{"level":"info","message":"192.168.1.163 Requested College List","timestamp":"2023-05-09T11:39:14.833Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T11:47:39.978Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T11:48:07.649Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T11:48:08.917Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T11:48:13.817Z"}
+{"level":"info","message":"Server started on port 3000","timestamp":"2023-05-09T11:48:29.359Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T11:53:26.287Z"}
+{"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID 5699ef32-ef83-4e93-9768-f7452aa574f5","timestamp":"2023-05-09T11:55:44.278Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T11:55:44.344Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T11:55:55.680Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:10:14.788Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:10:16.829Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:10:23.939Z"}
+{"level":"info","message":"Institute 200 rejected the request to download the file with UUID 5699ef32-ef83-4e93-9768-f7452aa574f5","timestamp":"2023-05-09T12:10:32.831Z"}
+{"level":"info","message":"Institute 100 didn't received the message from 200 regarding file with UUID 5699ef32-ef83-4e93-9768-f7452aa574f5","timestamp":"2023-05-09T12:10:32.860Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:10:33.014Z"}
+{"level":"info","message":"Institute 100 Requested to send file test2.mkv to Institute 200 with size 2106844595 with UUID bfaf4ffe-56e5-4c1e-86ea-fecf6092740e","timestamp":"2023-05-09T12:12:17.223Z"}
+{"level":"info","message":"Message delivered to Institute 200","timestamp":"2023-05-09T12:12:17.260Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:21:50.975Z"}
+{"level":"info","message":"Institute 200 accepted the request to download the file with UUID bfaf4ffe-56e5-4c1e-86ea-fecf6092740e","timestamp":"2023-05-09T12:21:54.983Z"}
+{"level":"info","message":"Institute 100 didn't received the message from 200 regarding file with UUID bfaf4ffe-56e5-4c1e-86ea-fecf6092740e","timestamp":"2023-05-09T12:21:55.081Z"}
+{"level":"info","message":"Institute 100's IP Address  requested","timestamp":"2023-05-09T12:21:55.110Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:21:55.252Z"}
+{"level":"info","message":"172.30.194.222 Requested College List","timestamp":"2023-05-09T12:58:59.472Z"}

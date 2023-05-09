@@ -1,0 +1,5 @@
+uuid,filename,size,sender_id,receiver_id,secret_key,accept
+1,file1,5,100,200,qw,-1
+2,file2,6,200,200,while,0
+3,file3,7,300,200,ejs,0
+4,file4,8,400,200,readdir,0

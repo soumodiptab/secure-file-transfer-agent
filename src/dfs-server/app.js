@@ -91,7 +91,7 @@ app.post('/login', async (req, res) => {
 
 
 app.post('/sender_request', async (req, res) => {
-  const { uuid, filename, size, sender_id, secret_key, receiver_id } = req.body;
+  const { uuid, filename, size,parts, sender_id, secret_key, receiver_id } = req.body;
 
   try {
     // Read the IP address of the receiver from the CSV file
@@ -107,11 +107,13 @@ app.post('/sender_request', async (req, res) => {
         // Make a request to the receiver's API with the necessary data
         // const response = await axios.post(`http://${receiverIp}/dfs_request`, {
         try {
-            const response = await axios.post(`http://localhost:3001/dfs_request`, {
+            const response = await axios.post(`http://${receiverIp}/dfs_request`, {
             uuid,
             filename,
             size,
+            parts,
             sender_id,
+            receiver_id,
             secret_key
           });
 
@@ -151,7 +153,29 @@ app.post('/sender_request', async (req, res) => {
   }
 });
 
-app.post('/accept', async (req, res) => {
+app.post('/get_address', async (req, res) => {
+  try{
+    const {id} = req.body;
+    const stream = fs.createReadStream('users.csv')
+        .pipe(csv());
+    logger.info("Institute "+id+"'s IP Address  requested");
+    for await (const row of stream) {
+      const username = row.username;
+      if(username == id)
+      {
+        res.status(200).json({ip_address: row.ip_address});
+        return;
+      }
+    }
+    res.status(400).json({ error: 'Institute ID not found' });
+  }
+  catch(error)
+  {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}); 
+app.post('/accept_download', async (req, res) => {
   try {
     const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;
     const receiverRequest = {
@@ -170,12 +194,19 @@ app.post('/accept', async (req, res) => {
     {
       logger.info(`Institute ${receiver_id} rejected the request to download the file with UUID ${uuid}`);
     }
-    const receiverResponse = await axios.post('http://localhost:3000/receiver_request', receiverRequest);
+    const stream = fs.createReadStream('users.csv').pipe(csv());
+    for await (const row of stream) {
 
-    if (receiverResponse.data === 1) {
-      logger.info(`Institute ${sender_id} received the message from ${receiver_id} regarding file with UUID ${uuid}`);
-    } else {
-      logger.info(`Institute ${sender_id} didn't received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+      if (row.username === sender_id) {
+        const senderIP = row.ip_address;
+        const receiverResponse = await axios.post(`http://${senderIP}/receiver_request`, receiverRequest);
+
+        if (receiverResponse.data === 1) {
+          logger.info(`Institute ${sender_id} received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+        } else {
+          logger.info(`Institute ${sender_id} didn't received the message from ${receiver_id} regarding file with UUID ${uuid}`);
+        }
+      }
     }
 
     res.status(200).send(receiverResponse.data);
@@ -186,6 +217,6 @@ app.post('/accept', async (req, res) => {
 });
 
 
-app.listen(4000, () => {
+app.listen(4000,'0.0.0.0' ,() => {
     logger.info('Server started on port 3000');
 });
