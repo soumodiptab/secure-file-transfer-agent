@@ -1,11 +1,11 @@
-const express = require('express');
-const csv = require('csv-parser');
-const fs = require('fs');
-const bcrypt = require('bcrypt');
-const axios = require('axios');
-const mime = require('mime');
+const express = require("express");
+const csv = require("csv-parser");
+const fs = require("fs");
+const bcrypt = require("bcrypt");
+const axios = require("axios");
+const mime = require("mime");
 
-const { createLogger, transports, format } = require('winston');
+const { createLogger, transports, format } = require("winston");
 
 const app = express();
 
@@ -13,65 +13,67 @@ app.use(express.json());
 
 // Configure Winston logger
 const logger = createLogger({
-  level: 'info',
+  level: "info",
   transports: [
-    new transports.File({ filename: 'server.log', format: format.combine(format.timestamp(), format.json()) }),
+    new transports.File({
+      filename: "server.log",
+      format: format.combine(format.timestamp(), format.json()),
+    }),
   ],
 });
 
-app.use('/public', express.static('public', {
+app.use(
+  "/public",
+  express.static("public", {
     setHeaders: (res, path) => {
-      res.setHeader('Content-Type', mime.getType(path));
-    }
-  }));
-  
+      res.setHeader("Content-Type", mime.getType(path));
+    },
+  })
+);
 
 // Set the view engine to EJS
-app.set('view engine', 'ejs');
+app.set("view engine", "ejs");
 
 // Define routes
-app.get('/', (req, res) => {
-  res.render('index');
+app.get("/", (req, res) => {
+  res.render("index");
 });
 
-app.get('/history', (req, res) => {
-    // Read data from server.log file
-    const data = fs.readFileSync('server.log', 'utf8');
-  
-    // Split the data into an array of lines
-    const lines = data.trim().split('\n');
-  
-    // Parse each line into an object with timestamp and message properties
-    const parsedData = lines.slice(-20).map(line => {
-      const obj = JSON.parse(line);
-      const message = obj.message;
-      var timestamp = Date.parse(obj['timestamp']);
-      timestamp = new Date(timestamp);
-      timestamp = timestamp.toLocaleString();
-      return { timestamp, message };
-    });
-  
-    // Sort the data by timestamp in descending order
-    const sortedData = parsedData.sort((a, b) => {
-      return new Date(b.timestamp) - new Date(a.timestamp);
-    });
-  
-    // Render the history page with the sorted data
-    res.render('history', { data: sortedData });
+app.get("/history", (req, res) => {
+  // Read data from server.log file
+  const data = fs.readFileSync("server.log", "utf8");
+
+  // Split the data into an array of lines
+  const lines = data.trim().split("\n");
+
+  // Parse each line into an object with timestamp and message properties
+  const parsedData = lines.slice(-20).map((line) => {
+    const obj = JSON.parse(line);
+    const message = obj.message;
+    var timestamp = Date.parse(obj["timestamp"]);
+    timestamp = new Date(timestamp);
+    timestamp = timestamp.toLocaleString();
+    return { timestamp, message };
   });
 
-  app.get('/current', (req, res) => {
-    
-    res.render('current', { data: "Work in Progress" });
+  // Sort the data by timestamp in descending order
+  const sortedData = parsedData.sort((a, b) => {
+    return new Date(b.timestamp) - new Date(a.timestamp);
   });
-  
 
-app.post('/login', async (req, res) => {
+  // Render the history page with the sorted data
+  res.render("history", { data: sortedData });
+});
+
+app.get("/current", (req, res) => {
+  res.render("current", { data: "Work in Progress" });
+});
+
+app.post("/login", async (req, res) => {
   const ip_address = req.body.ip_address;
   const encryptedData = [];
 
-  const stream = fs.createReadStream('users.csv')
-    .pipe(csv());
+  const stream = fs.createReadStream("users.csv").pipe(csv());
 
   for await (const row of stream) {
     const username = row.username;
@@ -86,96 +88,98 @@ app.post('/login', async (req, res) => {
   res.json(encryptedData);
 
   // Log response
-  logger.info(ip_address+" Requested College List");
+  logger.info(ip_address + " Requested College List");
 });
 
-
-app.post('/sender_request', async (req, res) => {
-  const { uuid, filename, size,parts, sender_id, secret_key, receiver_id } = req.body;
+app.post("/sender_request", async (req, res) => {
+  const { uuid, filename, size, parts, sender_id, secret_key, receiver_id } = req.body;
 
   try {
     // Read the IP address of the receiver from the CSV file
-    const stream = fs.createReadStream('users.csv')
-      .pipe(csv());
+    const stream = fs.createReadStream("users.csv").pipe(csv());
 
     for await (const row of stream) {
-
       if (row.username === receiver_id) {
         const receiverIp = row.ip_address;
 
-        logger.info("Institute "+sender_id + " Requested to send file " + filename + " to Institute " + receiver_id + " with size " + size + " with UUID " + uuid);
+        logger.info(
+          "Institute " +
+            sender_id +
+            " Requested to send file " +
+            filename +
+            " to Institute " +
+            receiver_id +
+            " with size " +
+            size +
+            " with UUID " +
+            uuid
+        );
         // Make a request to the receiver's API with the necessary data
         // const response = await axios.post(`http://${receiverIp}/dfs_request`, {
         try {
-            const response = await axios.post(`http://${receiverIp}/dfs_request`, {
+          const response = await axios.post(`http://${receiverIp}/dfs_request`, {
             uuid,
             filename,
             size,
             parts,
             sender_id,
             receiver_id,
-            secret_key
+            secret_key,
           });
 
           const { status } = response.data;
           // Return a response to the sender API based on the DFS response status
           if (status == 1) {
-            res.status(200).json({  message: 'delivered'});
+            res.status(200).json({ message: "delivered" });
             // Log response
-            logger.info('Message delivered to Institute '+receiver_id);
+            logger.info("Message delivered to Institute " + receiver_id);
             return;
-
-          } 
+          }
         } catch (error) {
-            res.status(400).json({ message: 'not-delivered'});
+          res.status(400).json({ message: "not-delivered" });
 
-            // Log response
-            logger.info("Message not delivered to Institute "+receiver_id);
-            
-            return;
+          // Log response
+          logger.info("Message not delivered to Institute " + receiver_id);
+
+          return;
         }
-        
       }
     }
 
     // If we reach the end of the CSV file without finding the receiver's IP,
     // return an error response
-    res.status(400).json({ error: 'Receiver ID not found' });
+    res.status(400).json({ error: "Receiver ID not found" });
 
     // Log response
-    logger.info("Institute "+receiver_id+" Not Found");
+    logger.info("Institute " + receiver_id + " Not Found");
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
 
     // Log error
     logger.error("Internal Server Error");
   }
 });
 
-app.post('/get_address', async (req, res) => {
-  try{
-    const {id} = req.body;
-    const stream = fs.createReadStream('users.csv')
-        .pipe(csv());
-    logger.info("Institute "+id+"'s IP Address  requested");
+app.post("/get_address", async (req, res) => {
+  try {
+    const { id } = req.body;
+    const stream = fs.createReadStream("users.csv").pipe(csv());
+    logger.info("Institute " + id + "'s IP Address  requested");
     for await (const row of stream) {
       const username = row.username;
-      if(username == id)
-      {
-        res.status(200).json({ip_address: row.ip_address});
+      if (username == id) {
+        res.status(200).json({ ip_address: row.ip_address });
         return;
       }
     }
-    res.status(400).json({ error: 'Institute ID not found' });
-  }
-  catch(error)
-  {
+    res.status(400).json({ error: "Institute ID not found" });
+  } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: "Internal Server Error" });
   }
-}); 
-app.post('/accept_download', async (req, res) => {
+});
+app.post("/accept_download", async (req, res) => {
   try {
     const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;
     const receiverRequest = {
@@ -186,37 +190,29 @@ app.post('/accept_download', async (req, res) => {
       receiver_id,
       accept,
     };
-    if (accept) 
-    {
-      logger.info(`Institute ${receiver_id} accepted the request to download the file with UUID ${uuid}`);
+    if (accept) {
+      logger.info(
+        `Institute ${receiver_id} accepted the request to download the file with UUID ${uuid}`
+      );
+    } else {
+      logger.info(
+        `Institute ${receiver_id} rejected the request to download the file with UUID ${uuid}`
+      );
     }
-    else
-    {
-      logger.info(`Institute ${receiver_id} rejected the request to download the file with UUID ${uuid}`);
-    }
-    const stream = fs.createReadStream('users.csv').pipe(csv());
+    const stream = fs.createReadStream("users.csv").pipe(csv());
     for await (const row of stream) {
-
       if (row.username === sender_id) {
         const senderIP = row.ip_address;
-        const receiverResponse = await axios.post(`http://${senderIP}/receiver_request`, receiverRequest);
-
-        if (receiverResponse.data === 1) {
-          logger.info(`Institute ${sender_id} received the message from ${receiver_id} regarding file with UUID ${uuid}`);
-        } else {
-          logger.info(`Institute ${sender_id} didn't received the message from ${receiver_id} regarding file with UUID ${uuid}`);
-        }
       }
     }
 
-    res.status(200).send(receiverResponse.data);
+    res.status(200).send({ status: "ok" });
   } catch (error) {
     console.error(error.message);
     res.status(500).send(error.message);
   }
 });
 
-
-app.listen(4000,'0.0.0.0' ,() => {
-    logger.info('Server started on port 3000');
+app.listen(4000, "0.0.0.0", () => {
+  logger.info("Server started on port 3000");
 });
