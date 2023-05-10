@@ -766,11 +766,11 @@ io.on("connection", (socket) => {
   });
 });
 
-app.post('/receiver_request', async (req, res) => {
+app.post("/receiver_request", async (req, res) => {
   const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;
 
   // return 1 as the response to the reciever
-  res.status(200).send('1');
+  res.status(200).send("1");
 });
 
 server.listen(port, "0.0.0.0", () => console.log(`Downloader app listening on port <${port}>`));
