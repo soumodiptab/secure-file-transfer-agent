@@ -6,7 +6,7 @@
     "scripts": {
         "senderStart": "nodemon server.js 3000",
         "receiverStart": "nodemon server.js 3001",
-        "test":"jest --forceExit"
+        "test":"jest 3000 --forceExit"
     },
     "keywords": [],
     "author": "",
