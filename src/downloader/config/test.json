@@ -1,0 +1,9 @@
+{
+    "PART_SIZE": 67108864,
+    "TEMP_DIR": "./tmp",
+    "DOWNLOAD_DIR": "./downloads",
+    "MAX_WORKERS": 2,
+    "MIN_WORKERS": 4,
+    "DFS_SERVER": "localhost:4000",
+    "DFS_AUTH": "123456"
+}
