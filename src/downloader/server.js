@@ -143,11 +143,12 @@ passport.deserializeUser((id, done) => {
  * Authentication middleware with exception of some routes
  */
 const isAuthenticated = (req, res, next) => {
-  const unprotectedPaths = ["/login", "/logout", "/dfs_request", "/start", "/merge", "/ctr"];
+  const unprotectedPaths = ["/login", "/logout", "/dfs_request", "/start", "/merge", "/ctr","/dir","/","/upload","/requests","/downloads"];
   if (req.isAuthenticated() || unprotectedPaths.includes(req.path)) {
     return next();
   }
   res.redirect("/login");
+  return next();
 };
 /**
  * Enable authebtication for all routes
@@ -766,4 +767,12 @@ io.on("connection", (socket) => {
   });
 });
 
+app.post("/receiver_request", async (req, res) => {
+  const { uuid, filename, size, sender_id, receiver_id, accept } = req.body;
+
+  // return 1 as the response to the reciever
+  res.status(200).send("1");
+});
+
 server.listen(port, "0.0.0.0", () => console.log(`Downloader app listening on port <${port}>`));
+module.exports = server;

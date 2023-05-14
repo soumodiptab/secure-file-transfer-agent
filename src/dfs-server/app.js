@@ -214,5 +214,7 @@ app.post("/accept_download", async (req, res) => {
 });
 
 app.listen(4000, "0.0.0.0", () => {
-  logger.info("Server started on port 3000");
+  logger.info("Server started on port 4000");
 });
+
+module.exports = app;
