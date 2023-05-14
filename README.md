@@ -91,3 +91,15 @@ By adding a server that monitors the transfer process, both parties can view the
 ![](README_ASSETS/Images/workflow2.png)
 
 </center>
+
+### Instructions to run test suite :
+* Install all dependencies using `npm install`
+* Go to `src/dfs-server` and type `npm test`
+* Go to `src/downloader` and type `npm test`
+
+### Instructions to run system:
+* First setup configuration files in dfs-server with sender  and reciever ip address.
+* Setup dfs-server's ip address in `/config/default.json` in sender and reciever.
+* Run the dfs server using `npm run devStart`
+* Run sender side :`npm senderStart 3000`
+* Run reciever side :`npm recieverStart 3001`
